@@ -1,0 +1,87 @@
+buildscript {
+    ext {
+        // Spring & Core
+        springBootVersion = '4.0.0'
+        dependencyManagementPlugin = '1.1.7'
+        springCloudStarterConfig = '5.0.0'
+        springTxVersion = '6.2.1'
+        springStatemachineVersion = '4.0.0'
+        jakartaValidation = '3.1.0'
+        javaxAnnotationVersion = '1.3.2'
+
+        // Database
+        oraclejdbcVersion = '23.6.0.24.10'
+        postgresqlVersion = '42.7.7'
+
+        // gRPC & Protobuf
+        iogrpcVersion = '1.70.0'
+        grpcSpringBootStarter = '3.1.0.RELEASE'
+        protobufVersion = '3.25.5'
+        protobufPluginVersion = '0.9.4' // Latest version with Gradle 9+ support
+
+        // Messaging
+        kafkaVersion = '3.3.1'
+
+        // Tools & Utilities
+        lombokVersion = '1.18.38'
+        mapstructVersion = '1.6.3'
+        lombokMapstructBindingVersion = '0.2.0'
+        springdocOpenapiVersion = '2.7.0'
+        ioGithubClassgraph = '4.8.180' // Updated from 4.8.177 to fix CVE-2021-47621 (min: 4.8.112)
+        sonarVersion = '3.3'
+
+        // Apache Commons & POI
+        apacheCommonsLang3 = '3.18.0' // Updated from 3.17.0 to fix CVE-2025-48924
+        commonsBeanutilsVersion = '1.9.4'
+        commonsCodecVersion = '1.17.1'
+        apachePoiVersion = '5.4.0'
+
+        // Testing
+        junitVersion = '5.11.3'
+        mockitoVersion = '5.14.2'
+        easyRandomVersion = '5.0.0'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'org.springframework.boot' version "${springBootVersion}" apply false
+    id 'io.spring.dependency-management' version "${dependencyManagementPlugin}" apply false
+}
+
+allprojects {
+    group = 'com.empresa.plantilla'
+    version = '0.0.1-SNAPSHOT'
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+    apply plugin: 'io.spring.dependency-management'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_25
+        targetCompatibility = JavaVersion.VERSION_25
+    }
+
+    dependencies {
+        // Versiones comunes para todos los submódulos
+        implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+
+        // Lombok
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+        // Testing
+        testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+        testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

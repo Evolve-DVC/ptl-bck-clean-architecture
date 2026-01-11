@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${dependencyManagementPlugin}"
+}
+
+// Commons es una librería, no una aplicación
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+test {
+    useJUnitPlatform()
+    // Excluir clases abstractas de test
+    exclude '**/*Abstract*'
+}
+
+dependencies {
+    // Spring Framework
+    implementation 'org.springframework:spring-context:6.2.7'
+    implementation 'org.springframework:spring-web:6.2.8'
+
+    // Spring Data Commons (para Example, Pageable, Page)
+    implementation "org.springframework.data:spring-data-commons:${springBootVersion}"
+
+    // Jackson para anotaciones JSON
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.2'
+
+    // Apache Commons
+    implementation 'commons-beanutils:commons-beanutils:1.11.0'
+    implementation 'commons-codec:commons-codec:1.17.1'
+
+    // Lombok para reducir boilerplate
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    // Validación
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+    // Testing
+    testImplementation platform("org.junit:junit-bom:${junitVersion}")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.mockito:mockito-core:5.14.2'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
+}

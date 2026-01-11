@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+dependencies {
+    // Módulos del proyecto
+    implementation project(':commons')
+
+    // Zero dependencies allowed for Domain layer
+    // Pruebas
+    testImplementation platform("org.junit:junit-bom:${junitVersion}")
+    testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+    testImplementation "org.jeasy:easy-random-core:${easyRandomVersion}"
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'co/com/dvc/domain/model/**',
+                    'co/com/dvc/domain/enums/**',
+                    'co/com/dvc/domain/adapters/**'
+            ])
+        }))
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport
+    useJUnitPlatform()
+    // No fallar si solo hay tests abstractos
+    failOnNoDiscoveredTests = false
+}
