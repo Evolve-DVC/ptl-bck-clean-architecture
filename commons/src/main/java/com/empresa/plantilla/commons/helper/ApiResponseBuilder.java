@@ -21,9 +21,9 @@ import java.util.List;
  * @see GenericResponse
  * @see IPageableResult
  */
-@Component("apiResponseBuilder")
+@Component
 @RequiredArgsConstructor
-public class ResponseBuilder {
+public class ApiResponseBuilder {
 
     private final MessageSource messageSource;
 
@@ -116,7 +116,7 @@ public class ResponseBuilder {
             return GenericResponse.success(
                     HttpStatus.OK.value(),
                     getMessage(MessageKeys.SUCCESS_NO_RESULTS),
-                    Collections.<T>emptyList()
+                    Collections.emptyList()
             );
         }
 
@@ -145,7 +145,7 @@ public class ResponseBuilder {
             return GenericResponse.success(
                     HttpStatus.OK.value(),
                     getMessage(MessageKeys.SUCCESS_NO_RESULTS),
-                    Collections.<T>emptyList()
+                    Collections.emptyList()
             );
         }
 
@@ -175,7 +175,7 @@ public class ResponseBuilder {
             return GenericResponse.success(
                     HttpStatus.OK.value(),
                     getMessage(MessageKeys.SUCCESS_NO_RESULTS),
-                    Collections.<T>emptyList()
+                    Collections.emptyList()
             );
         }
 
@@ -381,4 +381,3 @@ public class ResponseBuilder {
         return list.subList(fromIndex, toIndex);
     }
 }
-

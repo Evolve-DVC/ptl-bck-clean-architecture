@@ -6,10 +6,9 @@ import com.empresa.plantilla.commons.dto.response.GenericResponse;
 import com.empresa.plantilla.commons.exception.ApplicationException;
 import com.empresa.plantilla.commons.exception.DomainException;
 import com.empresa.plantilla.commons.exception.InfrastructureException;
-import com.empresa.plantilla.commons.helper.ResponseBuilder;
+import com.empresa.plantilla.commons.helper.ApiResponseBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,10 +38,10 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ErrorHandlerConfig extends ResponseEntityExceptionHandler  {
 
-    private final ResponseBuilder responseBuilder;
+    private final ApiResponseBuilder responseBuilder;
     private final MessageService messageService;
 
-    public ErrorHandlerConfig(@Qualifier("apiResponseBuilder") ResponseBuilder responseBuilder,
+    public ErrorHandlerConfig(ApiResponseBuilder responseBuilder,
                               MessageService messageService) {
         this.responseBuilder = responseBuilder;
         this.messageService = messageService;

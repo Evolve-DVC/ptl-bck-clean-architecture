@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
@@ -16,7 +18,7 @@ import java.util.Locale;
  * y para cargar los mensajes desde los archivos de propiedades.
  */
 @Configuration
-public class LocaleConfig {
+public class LocaleConfig implements WebMvcConfigurer {
 
     /**
      * Configura el bean {@link LocaleResolver} que determina el idioma del usuario para cada solicitud.
@@ -60,6 +62,17 @@ public class LocaleConfig {
     }
 
     /**
+     * Registra el interceptor de cambio de locale.
+     * Este método es llamado automáticamente por Spring MVC para configurar interceptores.
+     *
+     * @param registry el registro de interceptores de Spring MVC
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+
+    /**
      * Configura el bean {@link ResourceBundleMessageSource} que gestiona la carga de mensajes de internacionalización.
      * <p>
      * Este bean se configura para buscar archivos de propiedades con el nombre base "messages" en el classpath
@@ -73,6 +86,7 @@ public class LocaleConfig {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages"); // Busca archivos messages.properties, messages_es.properties, etc.
         messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setUseCodeAsDefaultMessage(true); // Devuelve la clave si no encuentra el mensaje
         return messageSource;
     }
 }
