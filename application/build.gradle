@@ -29,6 +29,8 @@ dependencies {
     // Validación
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // SpringDoc OpenAPI (Swagger)
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiVersion}"
 
     // Spring Cloud
     implementation "org.springframework.cloud:spring-cloud-starter-config:${springCloudStarterConfig}"
