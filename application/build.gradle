@@ -32,6 +32,9 @@ dependencies {
     // SpringDoc OpenAPI (Swagger)
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocOpenapiVersion}"
 
+    // Spring Boot Configuration Processor (genera metadata para autocompletado del IDE)
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
     // Spring Cloud
     implementation "org.springframework.cloud:spring-cloud-starter-config:${springCloudStarterConfig}"
 
