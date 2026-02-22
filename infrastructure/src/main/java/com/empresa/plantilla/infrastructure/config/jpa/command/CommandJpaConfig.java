@@ -30,8 +30,10 @@ public class CommandJpaConfig extends AbstractJpaConfig {
     public LocalContainerEntityManagerFactoryBean commandEntityManagerFactory(
             @Qualifier("commandDataSource") DataSource dataSource,
             @Value("${spring.hibernate.hbm2ddl.auto}") String hbm2ddlAuto,
-            @Value("${spring.jpa.properties.hibernate.default_schema}") String defaultSchema) {
-        return createEntityManagerFactory(dataSource, hbm2ddlAuto, defaultSchema);
+            @Value("${spring.jpa.properties.hibernate.default_schema}") String defaultSchema,
+            @Value("${spring.jpa.show-sql:false}") boolean showSql,
+            @Value("${spring.jpa.properties.hibernate.format_sql:false}") boolean formatSql) {
+        return createEntityManagerFactory(dataSource, hbm2ddlAuto, defaultSchema, showSql, formatSql);
     }
 
     /**
@@ -45,9 +47,12 @@ public class CommandJpaConfig extends AbstractJpaConfig {
     public DataSource commandDataSource(
             @Qualifier("commandDBSecret") DBSecretDto secret,
             @Value("${spring.datasource.command.driverClassName}") String driverClass,
+            @Value("${spring.datasource.command.hikari.poolName}") String poolName,
             @Value("${spring.datasource.command.hikari.maximum-pool-size}") int maximumPoolSize,
-            @Value("${spring.datasource.command.hikari.minimum-idle}") int minimumIdle) {
-        return createDataSource(secret, driverClass, "commandPool", maximumPoolSize, minimumIdle);
+            @Value("${spring.datasource.command.hikari.minimum-idle}") int minimumIdle,
+            @Value("${spring.datasource.command.hikari.connectionTimeout}") long connectionTimeout,
+            @Value("${spring.datasource.command.hikari.idleTimeout}") long idleTimeout) {
+        return createDataSource(secret, driverClass, poolName, maximumPoolSize, minimumIdle, connectionTimeout, idleTimeout);
     }
 
     /**

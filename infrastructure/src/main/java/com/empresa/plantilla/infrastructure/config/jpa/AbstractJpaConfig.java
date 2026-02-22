@@ -24,12 +24,16 @@ public abstract class AbstractJpaConfig {
      * @param dataSource    la fuente de datos a utilizar.
      * @param hbm2ddlAuto   la estrategia de generación del esquema de la base de datos.
      * @param defaultSchema el esquema por defecto a utilizar.
+     * @param showSql       indica si se deben mostrar las sentencias SQL generadas.
+     * @param formatSql     indica si las sentencias SQL deben mostrarse formateadas.
      * @return una instancia configurada de LocalContainerEntityManagerFactoryBean.
      */
     protected LocalContainerEntityManagerFactoryBean createEntityManagerFactory(
             DataSource dataSource,
             String hbm2ddlAuto,
-            String defaultSchema) {
+            String defaultSchema,
+            boolean showSql,
+            boolean formatSql) {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
         em.setPackagesToScan("co.com.dvc.infrastructure.entities");
@@ -40,6 +44,8 @@ public abstract class AbstractJpaConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", hbm2ddlAuto);
         properties.setProperty("hibernate.default_schema", defaultSchema);
+        properties.setProperty("hibernate.show_sql", String.valueOf(showSql));
+        properties.setProperty("hibernate.format_sql", String.valueOf(formatSql));
         em.setJpaProperties(properties);
 
         return em;
@@ -48,9 +54,13 @@ public abstract class AbstractJpaConfig {
     /**
      * Crea y configura una instancia de DataSource utilizando HikariCP.
      *
-     * @param secret      el secreto de la base de datos que contiene las credenciales y la URL.
-     * @param driverClass el nombre de la clase del controlador JDBC.
-     * @param poolName    el nombre del pool de conexiones.
+     * @param secret            el secreto de la base de datos que contiene las credenciales y la URL.
+     * @param driverClass       el nombre de la clase del controlador JDBC.
+     * @param poolName          el nombre del pool de conexiones.
+     * @param maximumPoolSize   el tamaño máximo del pool de conexiones.
+     * @param minimumIdle       el número mínimo de conexiones inactivas en el pool.
+     * @param connectionTimeout el tiempo máximo (ms) de espera para obtener una conexión del pool.
+     * @param idleTimeout       el tiempo máximo (ms) que una conexión puede estar inactiva en el pool.
      * @return una instancia configurada de DataSource.
      */
     protected DataSource createDataSource(
@@ -58,7 +68,9 @@ public abstract class AbstractJpaConfig {
             String driverClass,
             String poolName,
             int maximumPoolSize,
-            int minimumIdle) {
+            int minimumIdle,
+            long connectionTimeout,
+            long idleTimeout) {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(secret.getUrl());
         config.setUsername(secret.getUsername());
@@ -67,6 +79,8 @@ public abstract class AbstractJpaConfig {
         config.setPoolName(poolName);
         config.setMaximumPoolSize(maximumPoolSize);
         config.setMinimumIdle(minimumIdle);
+        config.setConnectionTimeout(connectionTimeout);
+        config.setIdleTimeout(idleTimeout);
         return new HikariDataSource(config);
     }
 
