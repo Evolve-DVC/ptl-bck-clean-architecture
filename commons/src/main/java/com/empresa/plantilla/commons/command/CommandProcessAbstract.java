@@ -14,11 +14,11 @@ import java.util.concurrent.Executor;
 
 /**
  * Clase abstracta que define el patrón de procesamiento de comandos.
- * 
+ *
  * <p>Esta clase proporciona una estructura base para ejecutar comandos de forma
  * síncrona o asíncrona, siguiendo un flujo de preprocesamiento, procesamiento y
  * postprocesamiento.</p>
- * 
+ *
  * @param <C> tipo del contexto del comando
  * @param <R> tipo del resultado del comando
  */
@@ -68,7 +68,7 @@ public abstract class CommandProcessAbstract<C, R> {
 
     /**
      * Constructor que inyecta el executor para la ejecución asíncrona.
-     * 
+     *
      * @param executor executor configurado para tareas asíncronas
      */
     @Autowired
@@ -79,16 +79,16 @@ public abstract class CommandProcessAbstract<C, R> {
     /**
      * Metodo de preprocesamiento que debe ser implementado por las clases concretas.
      * Se ejecuta antes del procesamiento principal y típicamente incluye validaciones.
-     * 
+     *
      * @throws DomainException si ocurre un error de dominio
-     * @throws ParseException si ocurre un error de parseo
+     * @throws ParseException  si ocurre un error de parseo
      */
     protected abstract void preProcess() throws DomainException, ParseException;
 
     /**
      * Metodo principal de procesamiento que debe ser implementado por las clases concretas.
      * Contiene la lógica de negocio del comando.
-     * 
+     *
      * @throws DomainException si ocurre un error de dominio
      */
     protected abstract void process() throws DomainException;
@@ -96,14 +96,14 @@ public abstract class CommandProcessAbstract<C, R> {
     /**
      * Metodo de postprocesamiento que debe ser implementado por las clases concretas.
      * Se ejecuta después del procesamiento principal.
-     * 
+     *
      * @throws DomainException si ocurre un error de dominio
      */
     protected abstract void postProcess() throws DomainException;
 
     /**
      * Ejecuta el comando de forma síncrona o asíncrona según la configuración.
-     * 
+     *
      * @return el resultado del procesamiento del comando
      * @throws DomainException sí ocurre un error durante la ejecución
      */
@@ -118,7 +118,7 @@ public abstract class CommandProcessAbstract<C, R> {
     /**
      * Ejecuta el comando de forma síncrona siguiendo el flujo:
      * preprocesamiento -> procesamiento -> postprocesamiento.
-     * 
+     *
      * @return el resultado del procesamiento del comando
      * @throws DomainException sí ocurre un error durante la ejecución
      */
@@ -140,7 +140,7 @@ public abstract class CommandProcessAbstract<C, R> {
 
     /**
      * Ejecuta el comando de forma asíncrona utilizando CompletableFuture.
-     * 
+     *
      * @return el resultado del procesamiento del comando
      * @throws DomainException sí ocurre un error durante la ejecución asíncrona
      */

@@ -1,6 +1,7 @@
 # Guía de Uso de @Transactional en el Proyecto
 
 ## Índice
+
 1. [Introducción](#introducción)
 2. [Configuración Básica](#configuración-básica)
 3. [Uso en Commands](#uso-en-commands)
@@ -11,7 +12,9 @@
 
 ## Introducción
 
-Las transacciones garantizan que un conjunto de operaciones se ejecuten de forma atómica: o todas se completan exitosamente o ninguna se aplica. En este proyecto, utilizamos `@Transactional` de Spring Boot para gestionar transacciones de forma declarativa.
+Las transacciones garantizan que un conjunto de operaciones se ejecuten de forma atómica: o todas se completan
+exitosamente o ninguna se aplica. En este proyecto, utilizamos `@Transactional` de Spring Boot para gestionar
+transacciones de forma declarativa.
 
 ## Configuración Básica
 
@@ -698,6 +701,7 @@ class CreateUserCommandTest
 ### 1. Ubicación del @Transactional
 
 ✅ **CORRECTO**: Solo en el método `process()`
+
 ```java
 @Override
 @Transactional(rollbackFor = Exception.class)
@@ -710,6 +714,7 @@ protected void process() throws DomainException {
 ```
 
 ❌ **INCORRECTO**: En toda la clase
+
 ```java
 @Transactional  // NO hacer esto
 public class CreateUserCommand extends CommandProcessAbstract<...> {
@@ -720,6 +725,7 @@ public class CreateUserCommand extends CommandProcessAbstract<...> {
 ### 2. Especificar Rollback Explícitamente
 
 ✅ **CORRECTO**:
+
 ```java
 @Transactional(rollbackFor = Exception.class)
 protected void process() throws DomainException {
@@ -728,6 +734,7 @@ protected void process() throws DomainException {
 ```
 
 ❌ **INCORRECTO**: Confiar en el comportamiento por defecto
+
 ```java
 @Transactional  // Solo hace rollback para RuntimeException
 protected void process() throws DomainException {
@@ -738,6 +745,7 @@ protected void process() throws DomainException {
 ### 3. Usar Timeout Apropiado
 
 ✅ **CORRECTO**:
+
 ```java
 @Transactional(
     rollbackFor = Exception.class,
@@ -749,6 +757,7 @@ protected void process() throws DomainException {
 ```
 
 ⚠️ **PARA OPERACIONES LARGAS**:
+
 ```java
 @Transactional(
     rollbackFor = Exception.class,
@@ -762,6 +771,7 @@ protected void process() throws DomainException {
 ### 4. Separar Operaciones Transaccionales
 
 ✅ **CORRECTO**:
+
 ```java
 @Override
 protected void preProcess() throws DomainException {
@@ -789,6 +799,7 @@ protected void postProcess() throws DomainException {
 ### 5. Usar readOnly en Queries
 
 ❌ **INCORRECTO**:
+
 ```java
 @Transactional  // No especifica readOnly
 protected UserResult process() {
@@ -797,6 +808,7 @@ protected UserResult process() {
 ```
 
 ✅ **CORRECTO**:
+
 ```java
 @Transactional(readOnly = true)
 protected UserResult process() {
@@ -808,6 +820,7 @@ protected UserResult process() {
 ### 6. Manejo de Excepciones en Transacciones
 
 ✅ **CORRECTO**:
+
 ```java
 @Transactional(rollbackFor = Exception.class)
 protected Result process() throws DomainException {
@@ -826,6 +839,7 @@ protected Result process() throws DomainException {
 ### 7. Propagación en Commands Anidados
 
 ✅ **CORRECTO**:
+
 ```java
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 protected Result process() throws DomainException {
@@ -840,6 +854,7 @@ protected Result process() throws DomainException {
 ### 8. Logging en Transacciones
 
 ✅ **CORRECTO**:
+
 ```java
 @Transactional(rollbackFor = Exception.class)
 protected Result process() throws DomainException {
@@ -860,6 +875,7 @@ protected Result process() throws DomainException {
 ### 9. Evitar Operaciones Largas en Transacciones
 
 ❌ **INCORRECTO**:
+
 ```java
 @Transactional(rollbackFor = Exception.class)
 protected Result process() throws DomainException {
@@ -874,6 +890,7 @@ protected Result process() throws DomainException {
 ```
 
 ✅ **CORRECTO**:
+
 ```java
 @Transactional(rollbackFor = Exception.class)
 protected Result process() throws DomainException {
@@ -893,6 +910,7 @@ protected void postProcess() throws DomainException {
 ### 10. Testing con Transacciones
 
 ✅ **CORRECTO**:
+
 ```java
 @Test
 @Transactional
@@ -907,14 +925,14 @@ void testCreateUser() throws DomainException {
 
 ## Resumen de Configuración
 
-| Aspecto | Recomendación | Ejemplo |
-|---------|---------------|---------|
-| **Ubicación** | Solo en método `process()` | `@Transactional protected void process()` |
-| **Propagación** | `REQUIRED` para escritura | `propagation = Propagation.REQUIRED` |
-| **Rollback** | Todas las excepciones | `rollbackFor = Exception.class` |
-| **Timeout** | 30s normal, más para batch | `timeout = 30` |
-| **Isolation** | `READ_COMMITTED` | `isolation = Isolation.READ_COMMITTED` |
-| **ReadOnly** | `true` para queries | `readOnly = true` |
+| Aspecto         | Recomendación              | Ejemplo                                   |
+|-----------------|----------------------------|-------------------------------------------|
+| **Ubicación**   | Solo en método `process()` | `@Transactional protected void process()` |
+| **Propagación** | `REQUIRED` para escritura  | `propagation = Propagation.REQUIRED`      |
+| **Rollback**    | Todas las excepciones      | `rollbackFor = Exception.class`           |
+| **Timeout**     | 30s normal, más para batch | `timeout = 30`                            |
+| **Isolation**   | `READ_COMMITTED`           | `isolation = Isolation.READ_COMMITTED`    |
+| **ReadOnly**    | `true` para queries        | `readOnly = true`                         |
 
 ## Niveles de Aislamiento
 
@@ -1024,7 +1042,8 @@ El uso correcto de `@Transactional` en este proyecto garantiza:
 - ✅ **Mantenibilidad**: Código claro y predecible
 - ✅ **Testabilidad**: Facilidad para escribir tests confiables
 
-Siguiendo estas guías, tus Commands manejarán transacciones de forma robusta y confiable en el contexto de la arquitectura `CommandProcessAbstract`.
+Siguiendo estas guías, tus Commands manejarán transacciones de forma robusta y confiable en el contexto de la
+arquitectura `CommandProcessAbstract`.
 
 ## Referencias
 

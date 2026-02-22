@@ -62,10 +62,10 @@ public class GenericResponse<T> implements Serializable {
     /**
      * Creates a successful response with a single data object.
      *
-     * @param codigo HTTP status code
+     * @param codigo  HTTP status code
      * @param mensaje Response message
-     * @param dato The data object
-     * @param <T> Type of data
+     * @param dato    The data object
+     * @param <T>     Type of data
      * @return GenericResponse instance
      */
     public static <T> GenericResponse<T> success(Integer codigo, String mensaje, T dato) {
@@ -80,10 +80,10 @@ public class GenericResponse<T> implements Serializable {
     /**
      * Creates a successful response with a list of data.
      *
-     * @param codigo HTTP status code
+     * @param codigo  HTTP status code
      * @param mensaje Response message
-     * @param datos List of data items
-     * @param <T> Type of data
+     * @param datos   List of data items
+     * @param <T>     Type of data
      * @return GenericResponse instance
      */
     public static <T> GenericResponse<T> success(Integer codigo, String mensaje, List<T> datos) {
@@ -99,12 +99,12 @@ public class GenericResponse<T> implements Serializable {
     /**
      * Creates a successful paginated response with metadata.
      *
-     * @param codigo HTTP status code
+     * @param codigo  HTTP status code
      * @param mensaje Response message
-     * @param datos List of data items
-     * @param conteo Total count
+     * @param datos   List of data items
+     * @param conteo  Total count
      * @param totales Summary information
-     * @param <T> Type of data
+     * @param <T>     Type of data
      * @return GenericResponse instance
      */
     public static <T> GenericResponse<T> successPaginated(
@@ -126,9 +126,9 @@ public class GenericResponse<T> implements Serializable {
     /**
      * Creates an error response.
      *
-     * @param codigo HTTP status code
+     * @param codigo  HTTP status code
      * @param mensaje Error message
-     * @param <T> Type of data
+     * @param <T>     Type of data
      * @return GenericResponse instance
      */
     public static <T> GenericResponse<T> error(Integer codigo, String mensaje) {

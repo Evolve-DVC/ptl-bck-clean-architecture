@@ -5,7 +5,7 @@ package com.empresa.plantilla.commons.exception;
  * This exception is used to handle application layer errors and orchestration issues.
  */
 public class ApplicationException extends RuntimeException {
-    
+
     /**
      * Constructs a new ApplicationException with the specified detail message.
      *
@@ -15,7 +15,7 @@ public class ApplicationException extends RuntimeException {
     public ApplicationException(String message) {
         super(message);
     }
-    
+
     /**
      * Constructs a new ApplicationException with the specified detail message and cause.
      *

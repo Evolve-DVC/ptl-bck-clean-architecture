@@ -65,6 +65,7 @@ public class ProductController {
 ```
 
 **Explicacion:**
+
 - `@Tag`: Agrupa los endpoints en Swagger UI
 - `name`: Nombre del grupo
 - `description`: Descripcion detallada
@@ -153,6 +154,7 @@ public class CreateProductRequest {
 ```
 
 **Propiedades Importantes:**
+
 - `description`: Descripcion del campo
 - `example`: Valor de ejemplo
 - `requiredMode`: Si es obligatorio

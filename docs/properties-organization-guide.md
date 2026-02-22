@@ -12,7 +12,9 @@ Este proyecto sigue una estrategia de configuracion en dos niveles:
 ## 📁 application.properties (Base - Config Server)
 
 ### Proposito
+
 Contiene configuraciones **estructurales y generales** que:
+
 - Son comunes a TODOS los ambientes (dev, staging, prod)
 - Definen la estructura y comportamiento de frameworks
 - Seran movidas al servidor de configuracion centralizada (Spring Cloud Config)
@@ -20,6 +22,7 @@ Contiene configuraciones **estructurales y generales** que:
 ### Que VA en este archivo ✅
 
 #### 1. Configuraciones Estructurales de Base de Datos
+
 ```properties
 # Dialectos, schemas, estrategias JTA
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
@@ -33,6 +36,7 @@ spring.jpa.hibernate.ddl-auto=none
 ```
 
 #### 2. Configuraciones Estructurales de Hikari Pool
+
 ```properties
 # Driver comun
 spring.datasource.command.driverClassName=org.postgresql.Driver
@@ -47,6 +51,7 @@ spring.datasource.command.hikari.pool-name=CommandHikariPool
 ```
 
 #### 3. Configuraciones de Frameworks (Swagger, Spring Boot)
+
 ```properties
 # SpringDoc/Swagger
 springdoc.api-docs.path=/v3/api-docs
@@ -61,6 +66,7 @@ logging.pattern.console=%clr(%d{...
 ```
 
 #### 4. Configuraciones Comunes de Kafka
+
 ```properties
 # Politicas comunes
 spring.kafka.consumer.auto-offset-reset=earliest
@@ -84,7 +90,9 @@ spring.kafka.producer.acks=1
 ## 📁 application-dev.properties (Desarrollo)
 
 ### Proposito
+
 Contiene configuraciones **especificas del ambiente de desarrollo** que:
+
 - Son unicas para este ambiente
 - Incluyen credenciales de desarrollo
 - Definen conexiones y recursos locales
@@ -93,11 +101,13 @@ Contiene configuraciones **especificas del ambiente de desarrollo** que:
 ### Que VA en este archivo ✅
 
 #### 1. Configuracion del Servidor
+
 ```properties
 server.port=8080
 ```
 
 #### 2. URLs y Credenciales de Base de Datos
+
 ```properties
 # URLs especificas de desarrollo
 spring.datasource.command.url=jdbc:postgresql://dev-server:5432/dev_db
@@ -110,6 +120,7 @@ spring.datasource.query.password=dev_password
 ```
 
 #### 3. Pool Sizes Especificos
+
 ```properties
 # Tamanos de pool para desarrollo (mas pequenos)
 spring.datasource.command.hikari.maximum-pool-size=5
@@ -120,6 +131,7 @@ spring.datasource.query.hikari.minimum-idle=5
 ```
 
 #### 4. Configuraciones de Desarrollo
+
 ```properties
 # Mostrar SQL en desarrollo
 spring.jpa.show-sql=true
@@ -131,6 +143,7 @@ spring.hibernate.hbm2ddl.auto=update
 ```
 
 #### 5. Niveles de Logging Especificos
+
 ```properties
 logging.level.root=INFO
 logging.level.com.empresa=DEBUG
@@ -138,6 +151,7 @@ logging.level.org.hibernate.SQL=DEBUG
 ```
 
 #### 6. Kafka - Valores Especificos
+
 ```properties
 # Bootstrap servers de desarrollo
 spring.kafka.bootstrap-servers=localhost:9092
@@ -145,12 +159,14 @@ spring.kafka.consumer.group-id=plantilla-group-dev
 ```
 
 #### 7. CORS - Origenes Especificos
+
 ```properties
 # Frontend de desarrollo
 cors.allowedOrigins=http://localhost:4200
 ```
 
 #### 8. URLs de Servicios Externos
+
 ```properties
 # GRPC Services
 grpc.services.example-service.address=localhost:8280
@@ -160,6 +176,7 @@ rest.services.example-service.url=http://localhost:8380/api
 ```
 
 #### 9. Configuraciones de Seguridad (JWT, etc)
+
 ```properties
 jwt.secret=mydevsecretkeyforjwtgeneration
 jwt.expirationMs=3600000
@@ -169,31 +186,31 @@ jwt.expirationMs=3600000
 
 ## 📊 Tabla de Decision Rapida
 
-| Configuracion | application.properties | application-{profile}.properties |
-|--------------|------------------------|----------------------------------|
-| **Dialect de Hibernate** | ✅ Si | ❌ No |
-| **Schema por defecto** | ✅ Si | ❌ No |
-| **DDL strategy default** | ✅ Si (none) | ✅ Si (override: update/validate) |
-| **Driver JDBC** | ✅ Si | ❌ No |
-| **Timeouts de Hikari** | ✅ Si | ❌ No |
-| **Pool names** | ✅ Si | ❌ No |
-| **URL de base de datos** | ❌ No | ✅ Si |
-| **Credenciales de BD** | ❌ No | ✅ Si |
-| **Pool sizes (max/min)** | ❌ No | ✅ Si |
-| **Server port** | ❌ No | ✅ Si |
-| **Swagger enabled** | ✅ Si | ❌ No |
-| **Swagger path** | ✅ Si | ❌ No |
-| **Swagger UI config** | ✅ Si | ❌ No |
-| **Kafka auto-offset-reset** | ✅ Si | ❌ No |
-| **Kafka security protocol** | ✅ Si | ❌ No |
-| **Kafka bootstrap-servers** | ❌ No | ✅ Si |
-| **Kafka group-id** | ❌ No | ✅ Si |
-| **CORS allowed origins** | ❌ No | ✅ Si |
-| **Logging patterns** | ✅ Si | ❌ No |
-| **Logging levels** | ❌ No | ✅ Si |
-| **URLs servicios externos** | ❌ No | ✅ Si |
-| **JWT secret** | ❌ No | ✅ Si |
-| **Multipart sizes** | ✅ Si | ❌ No |
+| Configuracion               | application.properties | application-{profile}.properties |
+|-----------------------------|------------------------|----------------------------------|
+| **Dialect de Hibernate**    | ✅ Si                   | ❌ No                             |
+| **Schema por defecto**      | ✅ Si                   | ❌ No                             |
+| **DDL strategy default**    | ✅ Si (none)            | ✅ Si (override: update/validate) |
+| **Driver JDBC**             | ✅ Si                   | ❌ No                             |
+| **Timeouts de Hikari**      | ✅ Si                   | ❌ No                             |
+| **Pool names**              | ✅ Si                   | ❌ No                             |
+| **URL de base de datos**    | ❌ No                   | ✅ Si                             |
+| **Credenciales de BD**      | ❌ No                   | ✅ Si                             |
+| **Pool sizes (max/min)**    | ❌ No                   | ✅ Si                             |
+| **Server port**             | ❌ No                   | ✅ Si                             |
+| **Swagger enabled**         | ✅ Si                   | ❌ No                             |
+| **Swagger path**            | ✅ Si                   | ❌ No                             |
+| **Swagger UI config**       | ✅ Si                   | ❌ No                             |
+| **Kafka auto-offset-reset** | ✅ Si                   | ❌ No                             |
+| **Kafka security protocol** | ✅ Si                   | ❌ No                             |
+| **Kafka bootstrap-servers** | ❌ No                   | ✅ Si                             |
+| **Kafka group-id**          | ❌ No                   | ✅ Si                             |
+| **CORS allowed origins**    | ❌ No                   | ✅ Si                             |
+| **Logging patterns**        | ✅ Si                   | ❌ No                             |
+| **Logging levels**          | ❌ No                   | ✅ Si                             |
+| **URLs servicios externos** | ❌ No                   | ✅ Si                             |
+| **JWT secret**              | ❌ No                   | ✅ Si                             |
+| **Multipart sizes**         | ✅ Si                   | ❌ No                             |
 
 ---
 
@@ -211,6 +228,7 @@ application.properties           (Base - Config Server)
 ### Ejemplo: Pool Sizes por Ambiente
 
 **application.properties** (comun):
+
 ```properties
 # Timeouts comunes
 spring.datasource.command.hikari.idle-timeout=300000
@@ -218,6 +236,7 @@ spring.datasource.command.hikari.connection-timeout=20000
 ```
 
 **application-dev.properties**:
+
 ```properties
 # Pool pequeno para desarrollo
 spring.datasource.command.hikari.maximum-pool-size=5
@@ -225,6 +244,7 @@ spring.datasource.command.hikari.minimum-idle=2
 ```
 
 **application-staging.properties**:
+
 ```properties
 # Pool mediano para staging
 spring.datasource.command.hikari.maximum-pool-size=10
@@ -232,6 +252,7 @@ spring.datasource.command.hikari.minimum-idle=5
 ```
 
 **application-prod.properties**:
+
 ```properties
 # Pool grande para produccion
 spring.datasource.command.hikari.maximum-pool-size=20
@@ -264,6 +285,7 @@ spring.datasource.command.hikari.minimum-idle=10
 ### ✅ CORRECTO
 
 **application.properties**:
+
 ```properties
 # Driver comun a todos los ambientes
 spring.datasource.command.driverClassName=org.postgresql.Driver
@@ -273,6 +295,7 @@ spring.datasource.command.hikari.connection-timeout=20000
 ```
 
 **application-dev.properties**:
+
 ```properties
 # URL especifica de desarrollo
 spring.datasource.command.url=jdbc:postgresql://localhost:5432/dev_db
@@ -284,6 +307,7 @@ spring.datasource.command.hikari.maximum-pool-size=5
 ### ❌ INCORRECTO
 
 **application.properties**:
+
 ```properties
 # ❌ NO: URL especifica (cambia por ambiente)
 spring.datasource.command.url=jdbc:postgresql://localhost:5432/dev_db

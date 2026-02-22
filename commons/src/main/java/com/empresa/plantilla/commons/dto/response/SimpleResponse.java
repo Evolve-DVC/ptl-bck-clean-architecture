@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  * Represents a generic response structure for architectural purposes.
- * This class is designed to encapsulate response data including a status code, 
+ * This class is designed to encapsulate response data including a status code,
  * a message, and a body containing a list of elements.
  *
  * @param <T> the type of elements in the response body

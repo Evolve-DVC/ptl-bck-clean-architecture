@@ -15,11 +15,11 @@ public interface IGenericService<M, K> {
     /**
      * Obtiene una lista paginada de elementos con opciones de ordenamiento y filtrado.
      *
-     * @param model modelo para filtrar
+     * @param model      modelo para filtrar
      * @param pageNumber número de página
-     * @param pageSize tamaño de página
-     * @param sortBy campo por el cual ordenar
-     * @param sortDir dirección del ordenamiento
+     * @param pageSize   tamaño de página
+     * @param sortBy     campo por el cual ordenar
+     * @param sortDir    dirección del ordenamiento
      * @param filterType tipo de filtro a aplicar
      * @return resultado paginado de elementos
      */

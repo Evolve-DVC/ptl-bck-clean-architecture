@@ -49,7 +49,7 @@ public abstract class QueryAbstract<C, R> {
      * Este metodo puede ser sobrescrito para modificar o enriquecer el resultado antes de devolverlo.
      *
      * @param context El objeto de contexto que contiene la información necesaria para el post-procesamiento
-     * @param result El resultado obtenido del proceso principal de la consulta
+     * @param result  El resultado obtenido del proceso principal de la consulta
      * @return El resultado post-procesado, por defecto devuelve el mismo resultado sin modificaciones
      */
     protected R postProcess(C context, R result) {

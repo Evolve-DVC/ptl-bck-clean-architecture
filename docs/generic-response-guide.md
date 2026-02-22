@@ -2,7 +2,8 @@
 
 ## Introducción
 
-`GenericResponse<T>` es la clase unificada para todas las respuestas de API en el proyecto. Reemplaza las clases anteriores `SimpleResponse` y `BodyResponse`, proporcionando una solución más flexible y completa.
+`GenericResponse<T>` es la clase unificada para todas las respuestas de API en el proyecto. Reemplaza las clases
+anteriores `SimpleResponse` y `BodyResponse`, proporcionando una solución más flexible y completa.
 
 ## Estructura de GenericResponse
 
@@ -40,6 +41,7 @@ public ResponseEntity<GenericResponse<UserDto>> getUserById(@PathVariable Long i
 ```
 
 **Respuesta JSON:**
+
 ```json
 {
   "ok": true,
@@ -73,6 +75,7 @@ public ResponseEntity<GenericResponse<UserDto>> getAllUsers() {
 ```
 
 **Respuesta JSON:**
+
 ```json
 {
   "ok": true,
@@ -119,6 +122,7 @@ public ResponseEntity<GenericResponse<UserDto>> getUsersPaginated(
 ```
 
 **Respuesta JSON:**
+
 ```json
 {
   "ok": true,
@@ -158,6 +162,7 @@ public ResponseEntity<GenericResponse<Void>> handleNotFound(ResourceNotFoundExce
 ```
 
 **Respuesta JSON:**
+
 ```json
 {
   "ok": false,
@@ -186,6 +191,7 @@ public ResponseEntity<GenericResponse<UserDto>> createUser(@RequestBody CreateUs
 ```
 
 **Respuesta JSON:**
+
 ```json
 {
   "ok": true,
@@ -241,6 +247,7 @@ public ResponseEntity<GenericResponse<Void>> deleteUser(@PathVariable Long id) {
 ```
 
 **Respuesta JSON:**
+
 ```json
 {
   "ok": true,
@@ -367,15 +374,19 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
 ## Métodos Factory Disponibles
 
 ### 1. success(codigo, mensaje, dato)
+
 Crea una respuesta exitosa con un solo objeto.
 
 ### 2. success(codigo, mensaje, datos)
+
 Crea una respuesta exitosa con una lista de objetos. Calcula automáticamente el `conteo`.
 
 ### 3. successPaginated(codigo, mensaje, datos, conteo, totales)
+
 Crea una respuesta paginada con metadatos adicionales.
 
 ### 4. error(codigo, mensaje)
+
 Crea una respuesta de error.
 
 ## Builder Pattern
@@ -453,6 +464,7 @@ GenericResponse.successPaginated(200, "OK", users, totalElements, "Página 1 de 
 ### Desde SimpleResponse
 
 **Antes:**
+
 ```java
 SimpleResponse<User> response = SimpleResponse.<User>builder()
         .ok(true)
@@ -463,6 +475,7 @@ SimpleResponse<User> response = SimpleResponse.<User>builder()
 ```
 
 **Ahora:**
+
 ```java
 GenericResponse<User> response = GenericResponse.success(200, "OK", user);
 ```
@@ -470,6 +483,7 @@ GenericResponse<User> response = GenericResponse.success(200, "OK", user);
 ### Desde BodyResponse
 
 **Antes:**
+
 ```java
 BodyResponse<User> body = BodyResponse.<User>builder()
         .conteo(users.size())
@@ -486,6 +500,7 @@ GenericResponse<User> response = GenericResponse.<User>builder()
 ```
 
 **Ahora:**
+
 ```java
 GenericResponse<User> response = GenericResponse.successPaginated(
     200, 
@@ -508,7 +523,8 @@ GenericResponse<User> response = GenericResponse.successPaginated(
 
 ## ResponseBuilder - Helper para Respuestas
 
-Para simplificar aún más la creación de respuestas, se proporciona la clase `ResponseBuilder` que actúa como una fachada sobre `GenericResponse`.
+Para simplificar aún más la creación de respuestas, se proporciona la clase `ResponseBuilder` que actúa como una fachada
+sobre `GenericResponse`.
 
 ### Métodos Disponibles
 
@@ -751,22 +767,23 @@ GenericResponse<User> response = ResponseBuilder.paginated(pageableResult);
 
 ### Cuándo usar qué
 
-| Caso de Uso | Método Recomendado |
-|-------------|-------------------|
-| Retornar un objeto | `ResponseBuilder.success(obj)` |
-| Retornar una lista | `ResponseBuilder.successList(list)` |
-| Retornar paginado | `ResponseBuilder.paginated(pageableResult)` |
-| Crear recurso | `ResponseBuilder.created(obj)` |
-| Eliminar recurso | `ResponseBuilder.noContent()` |
-| Error genérico | `ResponseBuilder.error(mensaje)` |
-| No encontrado | `ResponseBuilder.notFound(mensaje)` |
-| No autorizado | `ResponseBuilder.unauthorized(mensaje)` |
-| Sin permisos | `ResponseBuilder.forbidden(mensaje)` |
-| Datos inválidos | `ResponseBuilder.badRequest(mensaje)` |
+| Caso de Uso        | Método Recomendado                          |
+|--------------------|---------------------------------------------|
+| Retornar un objeto | `ResponseBuilder.success(obj)`              |
+| Retornar una lista | `ResponseBuilder.successList(list)`         |
+| Retornar paginado  | `ResponseBuilder.paginated(pageableResult)` |
+| Crear recurso      | `ResponseBuilder.created(obj)`              |
+| Eliminar recurso   | `ResponseBuilder.noContent()`               |
+| Error genérico     | `ResponseBuilder.error(mensaje)`            |
+| No encontrado      | `ResponseBuilder.notFound(mensaje)`         |
+| No autorizado      | `ResponseBuilder.unauthorized(mensaje)`     |
+| Sin permisos       | `ResponseBuilder.forbidden(mensaje)`        |
+| Datos inválidos    | `ResponseBuilder.badRequest(mensaje)`       |
 
 ## Conclusión
 
-`GenericResponse<T>` junto con `ResponseBuilder` proporcionan una solución completa y simplificada para manejar respuestas de API:
+`GenericResponse<T>` junto con `ResponseBuilder` proporcionan una solución completa y simplificada para manejar
+respuestas de API:
 
 - **GenericResponse**: Clase unificada para todas las respuestas
 - **ResponseBuilder**: Helper para crear respuestas de forma conveniente

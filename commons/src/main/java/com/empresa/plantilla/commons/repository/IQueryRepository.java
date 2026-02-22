@@ -18,7 +18,7 @@ public interface IQueryRepository<E, K> {
      * Busca todos los elementos que coinciden con el ejemplo proporcionado,
      * aplicando paginación.
      *
-     * @param example el ejemplo de entidad para filtrar la búsqueda
+     * @param example  el ejemplo de entidad para filtrar la búsqueda
      * @param pageable la información de paginación
      * @return una página de entidades que coinciden con el ejemplo
      */

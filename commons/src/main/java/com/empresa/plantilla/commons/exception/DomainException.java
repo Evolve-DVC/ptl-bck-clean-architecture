@@ -5,7 +5,7 @@ package com.empresa.plantilla.commons.exception;
  * This exception represents violations of business rules or domain invariants.
  */
 public class DomainException extends RuntimeException {
-    
+
     /**
      * Constructs a new DomainException with the specified detail message.
      *
@@ -15,7 +15,7 @@ public class DomainException extends RuntimeException {
     public DomainException(String message) {
         super(message);
     }
-    
+
     /**
      * Constructs a new DomainException with the specified detail message and cause.
      *

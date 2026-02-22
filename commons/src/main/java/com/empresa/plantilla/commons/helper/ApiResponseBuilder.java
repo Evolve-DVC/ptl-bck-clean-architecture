@@ -60,8 +60,8 @@ public class ApiResponseBuilder {
     /**
      * Creates a successful response with a single object and custom message.
      *
-     * @param <T> the type of the object
-     * @param obj the object to be included in the response
+     * @param <T>     the type of the object
+     * @param obj     the object to be included in the response
      * @param mensaje custom message
      * @return a GenericResponse containing the object
      */
@@ -76,7 +76,7 @@ public class ApiResponseBuilder {
     /**
      * Creates a successful response with a list of objects.
      *
-     * @param <T> the type of elements in the list
+     * @param <T>  the type of elements in the list
      * @param list the list of objects to be included
      * @return a GenericResponse containing the list
      */
@@ -91,8 +91,8 @@ public class ApiResponseBuilder {
     /**
      * Creates a successful response with a list of objects and custom message.
      *
-     * @param <T> the type of elements in the list
-     * @param list the list of objects to be included
+     * @param <T>     the type of elements in the list
+     * @param list    the list of objects to be included
      * @param mensaje custom message
      * @return a GenericResponse containing the list
      */
@@ -107,7 +107,7 @@ public class ApiResponseBuilder {
     /**
      * Creates a paginated response from an IPageableResult.
      *
-     * @param <T> the type of elements in the result
+     * @param <T>            the type of elements in the result
      * @param pageableResult the pageable result containing items and metadata
      * @return a GenericResponse with pagination metadata
      */
@@ -135,9 +135,9 @@ public class ApiResponseBuilder {
     /**
      * Creates a paginated response from an IPageableResult with custom message.
      *
-     * @param <T> the type of elements in the result
+     * @param <T>            the type of elements in the result
      * @param pageableResult the pageable result containing items and metadata
-     * @param mensaje custom message
+     * @param mensaje        custom message
      * @return a GenericResponse with pagination metadata
      */
     public <T> GenericResponse<T> paginated(IPageableResult<T> pageableResult, String mensaje) {
@@ -164,10 +164,10 @@ public class ApiResponseBuilder {
     /**
      * Creates a paginated response from a list with manual pagination.
      *
-     * @param <T> the type of elements in the list
-     * @param list the complete list of items
+     * @param <T>        the type of elements in the list
+     * @param list       the complete list of items
      * @param pageNumber the current page number (zero-based)
-     * @param pageSize the number of items per page
+     * @param pageSize   the number of items per page
      * @return a GenericResponse with pagination metadata
      */
     public <T> GenericResponse<T> paginatedFromList(List<T> list, Integer pageNumber, Integer pageSize) {
@@ -210,8 +210,8 @@ public class ApiResponseBuilder {
     /**
      * Creates a created response (HTTP 201) with the created object and custom message.
      *
-     * @param <T> the type of the object
-     * @param obj the created object
+     * @param <T>     the type of the object
+     * @param obj     the created object
      * @param mensaje custom message
      * @return a GenericResponse with HTTP 201 status
      */
@@ -240,7 +240,7 @@ public class ApiResponseBuilder {
     /**
      * Creates a no content response (HTTP 204) with custom message.
      *
-     * @param <T> the type of the response
+     * @param <T>     the type of the response
      * @param mensaje custom message
      * @return a GenericResponse with HTTP 204 status
      */
@@ -256,7 +256,7 @@ public class ApiResponseBuilder {
      * Creates an error response from an exception.
      *
      * @param <T> the type of the response
-     * @param ex the exception that caused the error
+     * @param ex  the exception that caused the error
      * @return a GenericResponse with error information
      */
     public <T> GenericResponse<T> error(Throwable ex) {
@@ -269,8 +269,8 @@ public class ApiResponseBuilder {
     /**
      * Creates an error response from an exception with custom error code.
      *
-     * @param <T> the type of the response
-     * @param ex the exception that caused the error
+     * @param <T>       the type of the response
+     * @param ex        the exception that caused the error
      * @param errorCode the HTTP error code
      * @return a GenericResponse with error information
      */
@@ -284,7 +284,7 @@ public class ApiResponseBuilder {
     /**
      * Creates an error response with a custom message.
      *
-     * @param <T> the type of the response
+     * @param <T>     the type of the response
      * @param mensaje error message
      * @return a GenericResponse with error information
      */
@@ -298,9 +298,9 @@ public class ApiResponseBuilder {
     /**
      * Creates an error response with custom error code and message.
      *
-     * @param <T> the type of the response
+     * @param <T>       the type of the response
      * @param errorCode the HTTP error code
-     * @param mensaje error message
+     * @param mensaje   error message
      * @return a GenericResponse with error information
      */
     public <T> GenericResponse<T> error(Integer errorCode, String mensaje) {
@@ -310,7 +310,7 @@ public class ApiResponseBuilder {
     /**
      * Creates a bad request response (HTTP 400).
      *
-     * @param <T> the type of the response
+     * @param <T>     the type of the response
      * @param mensaje error message
      * @return a GenericResponse with HTTP 400 status
      */
@@ -324,7 +324,7 @@ public class ApiResponseBuilder {
     /**
      * Creates a not found response (HTTP 404).
      *
-     * @param <T> the type of the response
+     * @param <T>     the type of the response
      * @param mensaje error message
      * @return a GenericResponse with HTTP 404 status
      */
@@ -338,7 +338,7 @@ public class ApiResponseBuilder {
     /**
      * Creates an unauthorized response (HTTP 401).
      *
-     * @param <T> the type of the response
+     * @param <T>     the type of the response
      * @param mensaje error message
      * @return a GenericResponse with HTTP 401 status
      */
@@ -352,7 +352,7 @@ public class ApiResponseBuilder {
     /**
      * Creates a forbidden response (HTTP 403).
      *
-     * @param <T> the type of the response
+     * @param <T>     the type of the response
      * @param mensaje error message
      * @return a GenericResponse with HTTP 403 status
      */
@@ -366,10 +366,10 @@ public class ApiResponseBuilder {
     /**
      * Extracts a page from a list based on page number and size.
      *
-     * @param <T> the type of elements in the list
-     * @param list the complete list
+     * @param <T>        the type of elements in the list
+     * @param list       the complete list
      * @param pageNumber the page number (zero-based)
-     * @param pageSize the size of each page
+     * @param pageSize   the size of each page
      * @return a sublist representing the requested page
      */
     private <T> List<T> paginateList(List<T> list, int pageNumber, int pageSize) {

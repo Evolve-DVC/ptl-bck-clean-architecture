@@ -33,7 +33,7 @@ public class GrpcConfig {
      * @return Host del servicio gRPC
      */
     public String getServiceHost(String name) {
-                        String host = grpc.get(name);
+        String host = grpc.get(name);
         log.debug("gRPC Service Host for {}: {}", name, host);
         return host;
     }

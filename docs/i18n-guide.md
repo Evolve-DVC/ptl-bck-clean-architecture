@@ -1,6 +1,7 @@
 # Guía de Internacionalización (i18n)
 
 ## 📋 Índice
+
 1. [Descripción General](#descripción-general)
 2. [Arquitectura](#arquitectura)
 3. [Configuración](#configuración)
@@ -14,14 +15,16 @@
 
 ## Descripción General
 
-El sistema de internacionalización permite que la API responda en diferentes idiomas según las preferencias del cliente. 
+El sistema de internacionalización permite que la API responda en diferentes idiomas según las preferencias del cliente.
 
 **Idiomas soportados:**
+
 - 🇪🇸 Español (es) - **Por defecto**
 - 🇬🇧 Inglés (en)
 - 🇧🇷 Portugués (pt)
 
 **Características:**
+
 - ✅ Mensajes de éxito internacionalizados
 - ✅ Mensajes de error internacionalizados
 - ✅ Detección automática del idioma desde header HTTP
@@ -66,13 +69,13 @@ El sistema de internacionalización permite que la API responda en diferentes id
 
 ### Clases Clave
 
-| Clase | Ubicación | Función |
-|-------|-----------|---------|
-| `LocaleConfig` | `application/config/i18` | Configura resolución de idioma |
-| `MessageService` | `application/config/i18` | Servicio para obtener mensajes |
-| `MessageKeys` | `commons/constants` | Constantes con claves de mensajes |
-| `ResponseBuilder` | `commons/helper` | Constructor de respuestas con i18n |
-| `ErrorHandlerConfig` | `application/config/exception` | Manejo de errores con i18n |
+| Clase                | Ubicación                      | Función                            |
+|----------------------|--------------------------------|------------------------------------|
+| `LocaleConfig`       | `application/config/i18`       | Configura resolución de idioma     |
+| `MessageService`     | `application/config/i18`       | Servicio para obtener mensajes     |
+| `MessageKeys`        | `commons/constants`            | Constantes con claves de mensajes  |
+| `ResponseBuilder`    | `commons/helper`               | Constructor de respuestas con i18n |
+| `ErrorHandlerConfig` | `application/config/exception` | Manejo de errores con i18n         |
 
 ---
 
@@ -115,6 +118,7 @@ public class LocaleConfig {
 - `messages_pt.properties` - Portugués
 
 **Formato:**
+
 ```properties
 # Sintaxis básica
 clave.mensaje = Texto del mensaje
@@ -131,6 +135,7 @@ error.type.mismatch = El parámetro ''{0}'' debe ser de tipo {1}
 ### 1. Especificar el Idioma desde el Cliente
 
 #### Usando Header HTTP (Recomendado)
+
 ```bash
 # Inglés
 curl -H "Accept-Language: en" http://localhost:8080/api/resource
@@ -143,6 +148,7 @@ curl -H "Accept-Language: pt" http://localhost:8080/api/resource
 ```
 
 #### Usando Parámetro Query (Alternativa)
+
 ```bash
 curl http://localhost:8080/api/resource?lang=en
 curl http://localhost:8080/api/resource?lang=es
@@ -219,11 +225,13 @@ public class MiController {
 ### Ejemplo 1: Respuesta de Éxito
 
 **Request:**
+
 ```bash
 curl -H "Accept-Language: en" http://localhost:8080/api/users/1
 ```
 
 **Response:**
+
 ```json
 {
   "code": 200,
@@ -236,6 +244,7 @@ curl -H "Accept-Language: en" http://localhost:8080/api/users/1
 ```
 
 **Con español:**
+
 ```bash
 curl -H "Accept-Language: es" http://localhost:8080/api/users/1
 ```
@@ -254,6 +263,7 @@ curl -H "Accept-Language: es" http://localhost:8080/api/users/1
 ### Ejemplo 2: Manejo de Errores
 
 **Request inválido:**
+
 ```bash
 curl -H "Accept-Language: en" -X POST http://localhost:8080/api/users \
   -H "Content-Type: application/json" \
@@ -261,6 +271,7 @@ curl -H "Accept-Language: en" -X POST http://localhost:8080/api/users \
 ```
 
 **Response:**
+
 ```json
 {
   "code": 400,
@@ -271,11 +282,13 @@ curl -H "Accept-Language: en" -X POST http://localhost:8080/api/users \
 ### Ejemplo 3: Paginación
 
 **Request:**
+
 ```bash
 curl -H "Accept-Language: pt" http://localhost:8080/api/users?page=0&size=10
 ```
 
 **Response:**
+
 ```json
 {
   "code": 200,
@@ -312,62 +325,62 @@ public class UserService {
 
 ### Mensajes de Éxito
 
-| Clave | Español | Inglés | Portugués |
-|-------|---------|--------|-----------|
-| `SUCCESS_OPERATION` | Operación exitosa | Operation successful | Operação bem-sucedida |
-| `SUCCESS_CREATED` | Recurso creado exitosamente | Resource created successfully | Recurso criado com sucesso |
+| Clave                | Español                         | Inglés                               | Portugués                          |
+|----------------------|---------------------------------|--------------------------------------|------------------------------------|
+| `SUCCESS_OPERATION`  | Operación exitosa               | Operation successful                 | Operação bem-sucedida              |
+| `SUCCESS_CREATED`    | Recurso creado exitosamente     | Resource created successfully        | Recurso criado com sucesso         |
 | `SUCCESS_NO_CONTENT` | Operación exitosa sin contenido | Successful operation with no content | Operação bem-sucedida sem conteúdo |
-| `SUCCESS_PAGINATED` | Resultados paginados | Paginated results | Resultados paginados |
-| `SUCCESS_NO_RESULTS` | No se encontraron resultados | No results found | Nenhum resultado encontrado |
-| `SUCCESS_PAGE_INFO` | Página {0} de {1} | Page {0} of {1} | Página {0} de {1} |
+| `SUCCESS_PAGINATED`  | Resultados paginados            | Paginated results                    | Resultados paginados               |
+| `SUCCESS_NO_RESULTS` | No se encontraron resultados    | No results found                     | Nenhum resultado encontrado        |
+| `SUCCESS_PAGE_INFO`  | Página {0} de {1}               | Page {0} of {1}                      | Página {0} de {1}                  |
 
 ### Errores Generales
 
-| Clave | Parámetros | Descripción |
-|-------|-----------|-------------|
-| `ERROR_INTERNAL_SERVER` | - | Error interno del servidor |
-| `ERROR_BAD_REQUEST` | - | Solicitud incorrecta |
-| `ERROR_NOT_FOUND` | - | Recurso no encontrado |
-| `ERROR_UNAUTHORIZED` | - | No autorizado |
-| `ERROR_FORBIDDEN` | - | Acceso prohibido |
-| `ERROR_NULL_POINTER` | - | Referencia nula detectada |
+| Clave                   | Parámetros | Descripción                |
+|-------------------------|------------|----------------------------|
+| `ERROR_INTERNAL_SERVER` | -          | Error interno del servidor |
+| `ERROR_BAD_REQUEST`     | -          | Solicitud incorrecta       |
+| `ERROR_NOT_FOUND`       | -          | Recurso no encontrado      |
+| `ERROR_UNAUTHORIZED`    | -          | No autorizado              |
+| `ERROR_FORBIDDEN`       | -          | Acceso prohibido           |
+| `ERROR_NULL_POINTER`    | -          | Referencia nula detectada  |
 
 ### Errores de Validación
 
-| Clave | Parámetros | Ejemplo |
-|-------|-----------|---------|
-| `ERROR_VALIDATION_PREFIX` | - | "Errores de validación" |
-| `ERROR_CONSTRAINT_VIOLATION` | {0} errores | "Errores de validación: name: required" |
-| `ERROR_ILLEGAL_ARGUMENT` | {0} mensaje | "Argumento inválido: valor no permitido" |
-| `ERROR_TYPE_MISMATCH` | {0} param, {1} tipo | "El parámetro 'id' debe ser de tipo Long" |
-| `ERROR_JSON_INVALID` | - | "Formato JSON inválido" |
-| `ERROR_METHOD_NOT_SUPPORTED` | {0} método, {1} soportados | "Método HTTP 'DELETE' no soportado" |
-| `ERROR_MEDIA_TYPE_NOT_SUPPORTED` | {0} tipo | "Tipo de contenido 'text/plain' no soportado" |
-| `ERROR_PARAMETER_MISSING` | {0} nombre | "Parámetro requerido 'id' no proporcionado" |
-| `ERROR_ENDPOINT_NOT_FOUND` | {0} URL | "Endpoint '/api/invalid' no encontrado" |
+| Clave                            | Parámetros                 | Ejemplo                                       |
+|----------------------------------|----------------------------|-----------------------------------------------|
+| `ERROR_VALIDATION_PREFIX`        | -                          | "Errores de validación"                       |
+| `ERROR_CONSTRAINT_VIOLATION`     | {0} errores                | "Errores de validación: name: required"       |
+| `ERROR_ILLEGAL_ARGUMENT`         | {0} mensaje                | "Argumento inválido: valor no permitido"      |
+| `ERROR_TYPE_MISMATCH`            | {0} param, {1} tipo        | "El parámetro 'id' debe ser de tipo Long"     |
+| `ERROR_JSON_INVALID`             | -                          | "Formato JSON inválido"                       |
+| `ERROR_METHOD_NOT_SUPPORTED`     | {0} método, {1} soportados | "Método HTTP 'DELETE' no soportado"           |
+| `ERROR_MEDIA_TYPE_NOT_SUPPORTED` | {0} tipo                   | "Tipo de contenido 'text/plain' no soportado" |
+| `ERROR_PARAMETER_MISSING`        | {0} nombre                 | "Parámetro requerido 'id' no proporcionado"   |
+| `ERROR_ENDPOINT_NOT_FOUND`       | {0} URL                    | "Endpoint '/api/invalid' no encontrado"       |
 
 ### Errores de Dominio
 
-| Clave | Descripción |
-|-------|-------------|
-| `ERROR_DOMAIN_VALID_ENUM` | Valor de enum inválido |
-| `ERROR_DOMAIN_VALID_ID_EMPTY` | ID vacío |
-| `ERROR_DOMAIN_VALID_CONTEXTO_NULL` | Contexto vacío |
-| `ERROR_DOMAIN_VALID_CREATE_EMPTY` | Campo createBy vacío |
-| `ERROR_DOMAIN_VALID_UPDATE_EMPTY` | Campo updateBy vacío |
+| Clave                              | Descripción            |
+|------------------------------------|------------------------|
+| `ERROR_DOMAIN_VALID_ENUM`          | Valor de enum inválido |
+| `ERROR_DOMAIN_VALID_ID_EMPTY`      | ID vacío               |
+| `ERROR_DOMAIN_VALID_CONTEXTO_NULL` | Contexto vacío         |
+| `ERROR_DOMAIN_VALID_CREATE_EMPTY`  | Campo createBy vacío   |
+| `ERROR_DOMAIN_VALID_UPDATE_EMPTY`  | Campo updateBy vacío   |
 
 ### Errores de Infraestructura
 
-| Clave | Parámetros | Ejemplo |
-|-------|-----------|---------|
-| `ERROR_INFRASTRUCTURE_NO_REGISTRO_BY_ID` | {0} ID | "No se encontró ningún registro con el ID: 12345" |
+| Clave                                    | Parámetros | Ejemplo                                           |
+|------------------------------------------|------------|---------------------------------------------------|
+| `ERROR_INFRASTRUCTURE_NO_REGISTRO_BY_ID` | {0} ID     | "No se encontró ningún registro con el ID: 12345" |
 
 ### Errores de Base de Datos
 
-| Clave | Descripción |
-|-------|-------------|
+| Clave                  | Descripción                      |
+|------------------------|----------------------------------|
 | `ERROR_DATA_INTEGRITY` | Violación de integridad de datos |
-| `ERROR_FK_CONSTRAINT` | Restricción de clave foránea |
+| `ERROR_FK_CONSTRAINT`  | Restricción de clave foránea     |
 
 ---
 
@@ -432,10 +445,10 @@ curl -H "Accept-Language: fr" http://localhost:8080/api/resource
    ```
 
 4. **Mantener sincronizados todos los archivos de idiomas**
-   - Asegurar que todas las claves existan en todos los idiomas
+    - Asegurar que todas las claves existan en todos los idiomas
 
 5. **Usar UTF-8 en archivos properties**
-   - Ya configurado en `messageSource.setDefaultEncoding("UTF-8")`
+    - Ya configurado en `messageSource.setDefaultEncoding("UTF-8")`
 
 ### ❌ DON'T
 
@@ -472,8 +485,8 @@ curl -H "Accept-Language: fr" http://localhost:8080/api/resource
    ```
 
 4. **No depender de sesiones HTTP**
-   - El sistema usa `AcceptHeaderLocaleResolver` (stateless)
-   - Cada request debe incluir `Accept-Language` header
+    - El sistema usa `AcceptHeaderLocaleResolver` (stateless)
+    - Cada request debe incluir `Accept-Language` header
 
 ---
 
@@ -550,6 +563,7 @@ class UserControllerTest {
 **Causa:** El cliente no está enviando el header `Accept-Language` o está configurado incorrectamente.
 
 **Solución:**
+
 ```bash
 # Asegurar que el header esté presente
 curl -H "Accept-Language: es" http://localhost:8080/api/resource
@@ -560,6 +574,7 @@ curl -H "Accept-Language: es" http://localhost:8080/api/resource
 **Causa:** La clave no existe en el archivo de properties del idioma solicitado.
 
 **Solución:** Verificar que la clave esté presente en todos los archivos:
+
 - `messages.properties`
 - `messages_en.properties`
 - `messages_pt.properties`
@@ -568,7 +583,8 @@ curl -H "Accept-Language: es" http://localhost:8080/api/resource
 
 **Causa:** El archivo properties no está en UTF-8.
 
-**Solución:** 
+**Solución:**
+
 1. Asegurar que el archivo esté guardado en UTF-8
 2. Verificar que `messageSource.setDefaultEncoding("UTF-8")` esté configurado
 
@@ -577,6 +593,7 @@ curl -H "Accept-Language: es" http://localhost:8080/api/resource
 ## Resumen
 
 ✅ **Sistema completamente implementado**
+
 - MessageService para gestión de mensajes
 - MessageKeys con todas las constantes
 - ResponseBuilder internacionalizado
@@ -584,11 +601,13 @@ curl -H "Accept-Language: es" http://localhost:8080/api/resource
 - Archivos de properties para es, en, pt
 
 ✅ **Listo para usar**
+
 - Inyectar `MessageService` o `ResponseBuilder`
 - Usar constantes de `MessageKeys`
 - Especificar idioma con header `Accept-Language`
 
 ✅ **Extensible**
+
 - Agregar nuevos idiomas fácilmente
 - Agregar nuevas claves de mensajes
 - Personalizar mensajes por proyecto

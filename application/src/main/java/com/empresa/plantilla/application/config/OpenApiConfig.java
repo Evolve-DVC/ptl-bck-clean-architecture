@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Configuración de OpenAPI/Swagger para la documentación de la API.
- *
+ * <p>
  * Esta configuración proporciona:
  * - Información detallada de la API (título, versión, descripción)
  * - Configuración de seguridad JWT

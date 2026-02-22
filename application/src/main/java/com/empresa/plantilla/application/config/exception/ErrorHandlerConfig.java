@@ -1,12 +1,13 @@
 package com.empresa.plantilla.application.config.exception;
 
-import com.empresa.plantilla.commons.services.i18.MessageService;
 import com.empresa.plantilla.commons.constants.MessageKeys;
 import com.empresa.plantilla.commons.dto.response.GenericResponse;
 import com.empresa.plantilla.commons.exception.ApplicationException;
 import com.empresa.plantilla.commons.exception.DomainException;
 import com.empresa.plantilla.commons.exception.InfrastructureException;
 import com.empresa.plantilla.commons.helper.ApiResponseBuilder;
+import com.empresa.plantilla.commons.services.i18.MessageService;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,7 +27,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import jakarta.validation.ConstraintViolationException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.stream.Collectors;
 
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RestControllerAdvice
-public class ErrorHandlerConfig extends ResponseEntityExceptionHandler  {
+public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
 
     private final ApiResponseBuilder responseBuilder;
     private final MessageService messageService;
@@ -183,7 +183,7 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler  {
                 .body(responseBuilder.error(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                         messageService.getMessage(MessageKeys.ERROR_NULL_POINTER)));
     }
-    
+
     /**
      * Handles ApplicationExceptions.
      *
@@ -226,9 +226,9 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler  {
     /**
      * Handles MethodArgumentNotValidException which occurs when @Valid fails.
      *
-     * @param ex The MethodArgumentNotValidException that was thrown.
+     * @param ex      The MethodArgumentNotValidException that was thrown.
      * @param headers The headers to be written to the response.
-     * @param status The selected response status.
+     * @param status  The selected response status.
      * @param request The current request.
      * @return A ResponseEntity containing an error response with details of validation failures.
      */

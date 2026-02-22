@@ -35,7 +35,7 @@ public class RestConfig {
      * @return Configuración del microservicio
      */
     public String getServiceConfig(String name) {
-                        String config = microservice.get(name);
+        String config = microservice.get(name);
         log.debug("Microservice Config for {}: {}", name, config);
         return config;
     }

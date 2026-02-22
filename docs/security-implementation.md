@@ -16,9 +16,11 @@
 **Estimación**: 8 puntos
 
 #### Descripción
+
 Crear un microservicio independiente que gestione la autenticación de usuarios y la generación de tokens JWT.
 
 #### Criterios de Aceptación
+
 - [ ] El microservicio debe exponer un endpoint `/api/auth/login` que reciba credenciales y retorne un token JWT
 - [ ] El token JWT debe incluir información del usuario (username, roles)
 - [ ] El token debe tener un tiempo de expiración configurable
@@ -30,6 +32,7 @@ Crear un microservicio independiente que gestione la autenticación de usuarios 
 #### Tareas Técnicas
 
 ##### 1.1 Configurar Dependencias
+
 ```gradle
 // build.gradle del módulo auth-service
 dependencies {
@@ -50,6 +53,7 @@ dependencies {
 ##### 1.2 DTOs de Entrada y Salida
 
 **LoginRequest.java**
+
 ```java
 package com.empresa.auth.application.dto;
 
@@ -67,6 +71,7 @@ public class LoginRequest {
 ```
 
 **AuthResponse.java**
+
 ```java
 package com.empresa.auth.application.dto;
 
@@ -90,6 +95,7 @@ public class AuthResponse {
 ```
 
 **ValidateTokenRequest.java**
+
 ```java
 package com.empresa.auth.application.dto;
 
@@ -108,6 +114,7 @@ public class ValidateTokenRequest {
 ```
 
 **ValidateTokenResponse.java**
+
 ```java
 package com.empresa.auth.application.dto;
 
@@ -131,6 +138,7 @@ public class ValidateTokenResponse {
 ```
 
 **RefreshTokenRequest.java**
+
 ```java
 package com.empresa.auth.application.dto;
 
@@ -147,6 +155,7 @@ public class RefreshTokenRequest {
 ##### 1.3 Servicio de JWT
 
 **JwtService.java**
+
 ```java
 package com.empresa.auth.domain.service;
 
@@ -249,6 +258,7 @@ public class JwtService {
 ##### 1.4 Servicio de Autenticación
 
 **AuthService.java**
+
 ```java
 package com.empresa.auth.domain.service;
 
@@ -362,6 +372,7 @@ public class AuthService {
 ##### 1.5 Controlador de Autenticación
 
 **AuthController.java**
+
 ```java
 package com.empresa.auth.infrastructure.controller;
 
@@ -412,6 +423,7 @@ public class AuthController {
 ##### 1.6 Configuración de Seguridad del Auth Service
 
 **SecurityConfig.java**
+
 ```java
 package com.empresa.auth.infrastructure.config;
 
@@ -497,6 +509,7 @@ jwt:
 ##### 1.8 Mensajes de Internacionalización
 
 **messages.properties**
+
 ```properties
 # Autenticación
 auth.username.required=El nombre de usuario es obligatorio
@@ -517,9 +530,11 @@ auth.refresh.failed=Error al renovar el token
 **Estimación**: 5 puntos
 
 #### Descripción
+
 Implementar la validación de tokens JWT en los microservicios de negocio para proteger los endpoints.
 
 #### Criterios de Aceptación
+
 - [ ] Los microservicios deben validar tokens JWT en cada petición protegida
 - [ ] Los endpoints públicos no deben requerir autenticación
 - [ ] Los endpoints protegidos deben retornar 401 si el token es inválido
@@ -545,6 +560,7 @@ dependencies {
 ##### 2.2 Validador de JWT
 
 **JwtValidator.java**
+
 ```java
 package com.empresa.plantilla.infrastructure.security;
 
@@ -611,6 +627,7 @@ public class JwtValidator {
 ##### 2.3 Filtro de Autenticación JWT
 
 **JwtAuthenticationFilter.java**
+
 ```java
 package com.empresa.plantilla.infrastructure.security;
 
@@ -679,6 +696,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 ##### 2.4 Configuración de Seguridad
 
 **SecurityConfig.java**
+
 ```java
 package com.empresa.plantilla.infrastructure.config;
 
@@ -748,6 +766,7 @@ jwt:
 ##### 2.6 Ejemplo de Controlador con Seguridad
 
 **ProductController.java**
+
 ```java
 package com.empresa.plantilla.infrastructure.controller;
 
@@ -796,6 +815,7 @@ public class ProductController {
 ##### 2.7 Configuración de Swagger con Seguridad
 
 **OpenApiConfig.java**
+
 ```java
 package com.empresa.plantilla.infrastructure.config;
 
@@ -831,9 +851,12 @@ public class OpenApiConfig {
 **Estimación**: 3 puntos
 
 #### Descripción
-Implementar manejo de excepciones personalizadas para errores de autenticación y autorización con mensajes internacionalizados.
+
+Implementar manejo de excepciones personalizadas para errores de autenticación y autorización con mensajes
+internacionalizados.
 
 #### Criterios de Aceptación
+
 - [ ] Retornar 401 (Unauthorized) cuando el token es inválido o ha expirado
 - [ ] Retornar 403 (Forbidden) cuando el usuario no tiene permisos
 - [ ] Los mensajes de error deben estar internacionalizados
@@ -844,6 +867,7 @@ Implementar manejo de excepciones personalizadas para errores de autenticación 
 ##### 3.1 Excepciones Personalizadas
 
 **InvalidCredentialsException.java**
+
 ```java
 package com.empresa.auth.domain.exception;
 
@@ -855,6 +879,7 @@ public class InvalidCredentialsException extends RuntimeException {
 ```
 
 **InvalidTokenException.java**
+
 ```java
 package com.empresa.auth.domain.exception;
 
@@ -868,6 +893,7 @@ public class InvalidTokenException extends RuntimeException {
 ##### 3.2 Manejador Global de Excepciones
 
 **SecurityExceptionHandler.java**
+
 ```java
 package com.empresa.plantilla.infrastructure.exception;
 
@@ -918,6 +944,7 @@ public class SecurityExceptionHandler {
 ##### 3.3 Entry Point para Autenticación
 
 **JwtAuthenticationEntryPoint.java**
+
 ```java
 package com.empresa.plantilla.infrastructure.security;
 
@@ -984,6 +1011,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 ##### 3.5 Mensajes de Error
 
 **messages.properties**
+
 ```properties
 # Seguridad
 auth.access.denied=No tiene permisos para acceder a este recurso
@@ -1050,6 +1078,7 @@ dependencies {
 ##### Test de Autenticación
 
 **AuthServiceTest.java**
+
 ```java
 @SpringBootTest
 class AuthServiceTest {
@@ -1085,6 +1114,7 @@ class AuthServiceTest {
 ##### Test de Validación de Token
 
 **JwtValidatorTest.java**
+
 ```java
 @SpringBootTest
 class JwtValidatorTest {
@@ -1158,9 +1188,11 @@ services:
 ### Endpoints del Auth Service
 
 #### POST /api/auth/login
+
 Autenticar usuario y obtener token JWT.
 
 **Request:**
+
 ```json
 {
   "username": "user@example.com",
@@ -1169,6 +1201,7 @@ Autenticar usuario y obtener token JWT.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -1181,9 +1214,11 @@ Autenticar usuario y obtener token JWT.
 ```
 
 #### POST /api/auth/validate
+
 Validar token JWT.
 
 **Request:**
+
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -1191,6 +1226,7 @@ Validar token JWT.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "valid": true,
@@ -1201,9 +1237,11 @@ Validar token JWT.
 ```
 
 #### POST /api/auth/refresh
+
 Renovar token JWT.
 
 **Request:**
+
 ```json
 {
   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -1211,6 +1249,7 @@ Renovar token JWT.
 ```
 
 **Response (200 OK):**
+
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -1249,6 +1288,7 @@ Renovar token JWT.
 ## Checklist de Implementación
 
 ### Auth Service
+
 - [ ] Configurar dependencias JWT
 - [ ] Crear DTOs de request/response
 - [ ] Implementar JwtService
@@ -1262,6 +1302,7 @@ Renovar token JWT.
 - [ ] Documentar API con Swagger
 
 ### Business Services
+
 - [ ] Configurar dependencias Security y JWT
 - [ ] Implementar JwtValidator
 - [ ] Crear JwtAuthenticationFilter
@@ -1302,6 +1343,7 @@ sequenceDiagram
 ## Soporte y Mantenimiento
 
 ### Logs Importantes
+
 ```java
 // Agregar logs en JwtAuthenticationFilter
 log.debug("Validating token for user: {}", username);
@@ -1309,6 +1351,7 @@ log.warn("Invalid token attempt from IP: {}", request.getRemoteAddr());
 ```
 
 ### Métricas
+
 - Número de autenticaciones exitosas/fallidas
 - Tokens generados por hora
 - Tokens rechazados por expiración
@@ -1317,6 +1360,7 @@ log.warn("Invalid token attempt from IP: {}", request.getRemoteAddr());
 ---
 
 ## Fecha de Creación
+
 **Creado**: 2026-01-17  
 **Versión**: 1.0  
 **Autor**: Equipo de Desarrollo

@@ -7,11 +7,13 @@ Plantilla base para microservicios Spring Boot con arquitectura hexagonal y mejo
 ### Acceso a Swagger UI
 
 **Swagger UI (Interfaz Interactiva)**
+
 ```
 http://localhost:8080/swagger-ui.html
 ```
 
 **OpenAPI JSON**
+
 ```
 http://localhost:8080/v3/api-docs
 ```
@@ -26,8 +28,9 @@ http://localhost:8080/v3/api-docs
 ### Internacionalizacion
 
 Incluye el header `Accept-Language`:
+
 - `es` - Español (por defecto)
-- `en` - English  
+- `en` - English
 - `pt` - Português
 
 ## Inicio Rapido
@@ -39,6 +42,7 @@ Incluye el header `Accept-Language`:
 ## Guias de Desarrollo
 
 ### Guias Principales
+
 - **[Documentacion de API con Swagger](./docs/swagger-documentation-guide.md)** - Como documentar endpoints y DTOs
 - **[Seguridad JWT](./docs/security-implementation.md)** - Implementacion de autenticacion centralizada
 - **[Internacionalizacion (i18n)](./docs/i18n-guide.md)** - Soporte multi-idioma
@@ -46,7 +50,9 @@ Incluye el header `Accept-Language`:
 - **[Respuestas Genericas](./docs/generic-response-guide.md)** - Estandarizacion de respuestas API
 
 ### Guias Tecnicas
-- **[Organizacion de Properties](./docs/properties-organization-guide.md)** - Como organizar configuraciones por ambiente
+
+- **[Organizacion de Properties](./docs/properties-organization-guide.md)** - Como organizar configuraciones por
+  ambiente
 - **[Analisis de Properties](./docs/properties-analysis-report.md)** - Reporte de propiedades utilizadas
 - **[Solucion de Warnings del IDE](./docs/ide-warnings-solution.md)** - Resolver warnings de configuracion
 
@@ -60,6 +66,7 @@ commons/           # Componentes compartidos (DTOs, Utilities)
 ```
 
 ### Patron Arquitectonico
+
 - **Arquitectura Hexagonal** (Ports & Adapters)
 - **CQRS Pattern** - Separacion de comandos y queries
 - **Repository Pattern** - Abstraccion de acceso a datos
@@ -79,16 +86,19 @@ commons/           # Componentes compartidos (DTOs, Utilities)
 ## Compilar y Ejecutar
 
 ### Compilar
+
 ```bash
 ./gradlew clean build
 ```
 
 ### Ejecutar
+
 ```bash
 ./gradlew bootRun
 ```
 
 ### Ejecutar Tests
+
 ```bash
 ./gradlew test
 ```
@@ -96,11 +106,13 @@ commons/           # Componentes compartidos (DTOs, Utilities)
 ## Configuracion
 
 ### Perfiles
+
 - `dev` - Desarrollo (por defecto)
 - `staging` - Staging/QA
 - `prod` - Produccion
 
 ### Cambiar Perfil
+
 ```properties
 # application.properties
 spring.profiles.active=dev
