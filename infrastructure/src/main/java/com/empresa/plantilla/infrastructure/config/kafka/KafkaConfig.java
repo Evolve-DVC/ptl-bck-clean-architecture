@@ -4,96 +4,86 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.kafka.autoconfigure.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.kafka.support.serializer.JacksonJsonDeserializer;
+import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
+import org.springframework.util.backoff.FixedBackOff;
 
-import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Clase de configuración para Kafka.
- * Proporciona la configuración necesaria para productores y consumidores de Kafka,
- * así como para la fábrica de contenedores de escucha.
- */
 @Configuration
 @EnableKafka
 public class KafkaConfig {
 
-    /**
-     * Dirección del servidor de Kafka.
-     * Se obtiene de las propiedades de configuración de la aplicación.
-     */
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String bootstrapServers;
+    private final KafkaProperties kafkaProperties;
 
-    /**
-     * Identificador del grupo de consumidores.
-     * Se obtiene de las propiedades de configuración de la aplicación.
-     */
-    @Value("${spring.kafka.consumer.group-id}")
-    private String consumerGroup;
+    @Autowired
+    public KafkaConfig(KafkaProperties kafkaProperties) {
+        this.kafkaProperties = kafkaProperties;
+    }
 
-    /**
-     * Configura la fábrica de productores de Kafka.
-     * Define las propiedades necesarias para la conexión y la serialización de mensajes.
-     *
-     * @return una instancia de ProducerFactory configurada.
-     */
+    // Configuración del productor
     @Bean
     public ProducerFactory<String, Object> producerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        Map<String, Object> configProps = kafkaProperties.buildProducerProperties();
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JacksonJsonSerializer.class);
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
-    /**
-     * Configura la plantilla de Kafka para enviar mensajes.
-     *
-     * @return una instancia de KafkaTemplate configurada.
-     */
     @Bean
     public KafkaTemplate<String, Object> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
-    /**
-     * Configura la fábrica de consumidores de Kafka.
-     * Define las propiedades necesarias para la conexión y la deserialización de mensajes.
-     *
-     * @return una instancia de ConsumerFactory configurada.
-     */
+    // Configuración del consumidor
     @Bean
     public ConsumerFactory<String, Object> consumerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup);
+        Map<String, Object> configProps = kafkaProperties.buildConsumerProperties();
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
-        configProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
-        configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        configProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JacksonJsonDeserializer.class.getName());
+        configProps.put("spring.json.trusted.packages", "*");
 
         return new DefaultKafkaConsumerFactory<>(configProps);
     }
 
-    /**
-     * Configura la fábrica de contenedores de escucha de Kafka.
-     * Utiliza la fábrica de consumidores configurada previamente.
-     *
-     * @return una instancia de ConcurrentKafkaListenerContainerFactory configurada.
-     */
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
+        factory.setCommonErrorHandler(kafkaErrorHandler()); // ← agregar el handler
         return factory;
+    }
+
+    /**
+     * ErrorHandler con máximo 2 reintentos (3 intentos en total).
+     * FixedBackOff(intervalo_ms, max_reintentos):
+     * - 5000L → espera 5 segundos entre reintentos
+     * - 2L → máximo 2 reintentos
+     * <p>
+     * DomainException e InfrastructureException son reintentables porque
+     * son errores controlados que pueden recuperarse asincrónicamente.
+     * <p>
+     * Nota: El backoff debe tener maxAttempts > 0 para que funcionen los reintentos.
+     * Con FixedBackOff(interval, maxAttempts), donde maxAttempts es el número de reintentos
+     * adicionales después del intento inicial.
+     */
+    @Bean
+    public DefaultErrorHandler kafkaErrorHandler() {
+        // Configurar backoff con 5 segundos de espera y 2 reintentos (3 intentos totales)
+        FixedBackOff backOff = new FixedBackOff(5000L, 2L);
+
+        // No agregar excepciones como no reintentables para permitir que el backoff funcione
+        // Por defecto, todas las excepciones serán reintentables según el backoff configurado
+        return new DefaultErrorHandler(backOff);
     }
 }
