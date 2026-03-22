@@ -7,6 +7,17 @@ dependencies {
     // Módulos del proyecto
     implementation project(':commons')
 
+    // Necesarias para compilar clases heredadas con anotaciones Spring
+    compileOnly 'org.springframework:spring-context:6.2.7'
+    compileOnly "org.springframework.data:spring-data-commons:${springBootVersion}"
+
+    // Lombok para modelos de dominio
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+
     // Zero dependencies allowed for Domain layer
     // Pruebas
     testImplementation platform("org.junit:junit-bom:${junitVersion}")
@@ -26,9 +37,9 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-                    'co/com/dvc/domain/model/**',
-                    'co/com/dvc/domain/enums/**',
-                    'co/com/dvc/domain/adapters/**'
+                    'com/empresa/plantilla/domain/constants/**',
+                    'com/empresa/plantilla/domain/model/**',
+                    'com/empresa/plantilla/domain/enums/**'
             ])
         }))
     }
