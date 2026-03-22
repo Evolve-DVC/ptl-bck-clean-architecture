@@ -207,7 +207,7 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
     protected ResponseEntity<GenericResponse<Void>> domainException(DomainException e) {
         log.error("Domain exception: {}", e.getMessage());
         return ResponseEntity.badRequest()
-                .body(responseBuilder.badRequest(e.getMessage()));
+                .body(responseBuilder.badRequest(messageService.getMessage(e.getMessage())));
     }
 
     /**
@@ -220,7 +220,7 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
     protected ResponseEntity<GenericResponse<Void>> infrastructureException(InfrastructureException e) {
         log.error("Infrastructure exception: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(responseBuilder.error(e, HttpStatus.INTERNAL_SERVER_ERROR.value()));
+                .body(responseBuilder.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), messageService.getMessage(e.getMessage())));
     }
 
     /**

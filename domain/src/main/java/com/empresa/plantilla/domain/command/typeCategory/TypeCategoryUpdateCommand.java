@@ -5,6 +5,11 @@ import com.empresa.plantilla.domain.adapters.output.services.typeCategory.ITypeC
 import com.empresa.plantilla.domain.command.UpdateCommandAbstract;
 import com.empresa.plantilla.domain.constants.DomainErrors;
 import com.empresa.plantilla.domain.model.TypeCategory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executor;
 
@@ -12,6 +17,8 @@ import java.util.concurrent.Executor;
  * Comando para actualizar una categoría de tipo existente.
  * Aplica validaciones de integridad y unicidad antes de actualizar.
  */
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class TypeCategoryUpdateCommand extends UpdateCommandAbstract<TypeCategory, Long> {
 
     private final ITypeCategoryService typeCategoryService;
@@ -22,7 +29,9 @@ public class TypeCategoryUpdateCommand extends UpdateCommandAbstract<TypeCategor
      * @param typeCategoryService servicio de dominio para categorías
      * @param executor            ejecutor del flujo del comando
      */
-    public TypeCategoryUpdateCommand(ITypeCategoryService typeCategoryService, Executor executor) {
+    @Autowired
+    public TypeCategoryUpdateCommand(ITypeCategoryService typeCategoryService,
+                                     @Qualifier("asyncExecutor") Executor executor) {
         super(typeCategoryService, executor);
         this.typeCategoryService = typeCategoryService;
     }

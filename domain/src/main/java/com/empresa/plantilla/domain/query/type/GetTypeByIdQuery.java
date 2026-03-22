@@ -3,10 +3,12 @@ package com.empresa.plantilla.domain.query.type;
 import com.empresa.plantilla.domain.adapters.output.services.type.ITypeService;
 import com.empresa.plantilla.domain.model.Type;
 import com.empresa.plantilla.domain.query.ModelQueryAbstract;
+import org.springframework.stereotype.Component;
 
 /**
  * Query para obtener un tipo por su identificador.
  */
+@Component
 public class GetTypeByIdQuery extends ModelQueryAbstract<Type, Long> {
 
     /**

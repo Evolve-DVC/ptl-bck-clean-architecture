@@ -5,6 +5,10 @@ import com.empresa.plantilla.domain.adapters.output.services.type.ITypeService;
 import com.empresa.plantilla.domain.command.DeleteCommandAbstract;
 import com.empresa.plantilla.domain.constants.DomainErrors;
 import com.empresa.plantilla.domain.model.Type;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executor;
 
@@ -12,6 +16,8 @@ import java.util.concurrent.Executor;
  * Comando para eliminar un tipo.
  * Valida que el contexto incluya identificador antes de ejecutar el borrado.
  */
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class TypeDeleteCommand extends DeleteCommandAbstract<Type, Long> {
 
     /**
@@ -20,7 +26,8 @@ public class TypeDeleteCommand extends DeleteCommandAbstract<Type, Long> {
      * @param typeService servicio de dominio para tipos
      * @param executor    ejecutor del flujo del comando
      */
-    public TypeDeleteCommand(ITypeService typeService, Executor executor) {
+    public TypeDeleteCommand(ITypeService typeService,
+                             @Qualifier("asyncExecutor") Executor executor) {
         super(typeService, executor);
     }
 

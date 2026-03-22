@@ -6,10 +6,12 @@ import com.empresa.plantilla.domain.adapters.output.services.type.ITypeService;
 import com.empresa.plantilla.domain.constants.DomainErrors;
 import com.empresa.plantilla.domain.model.Type;
 import com.empresa.plantilla.domain.query.PaginadoQueryAbstract;
+import org.springframework.stereotype.Component;
 
 /**
  * Query paginado de Type filtrado por categoria.
  */
+@Component
 public class GetTypesByTypeCategoryPaginadoQuery extends PaginadoQueryAbstract<Type, Long> {
 
     /**

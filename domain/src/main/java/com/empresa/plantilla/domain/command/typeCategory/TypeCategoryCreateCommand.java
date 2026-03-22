@@ -5,6 +5,11 @@ import com.empresa.plantilla.domain.adapters.output.services.typeCategory.ITypeC
 import com.empresa.plantilla.domain.command.CreateCommandAbstract;
 import com.empresa.plantilla.domain.constants.DomainErrors;
 import com.empresa.plantilla.domain.model.TypeCategory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executor;
 
@@ -12,6 +17,8 @@ import java.util.concurrent.Executor;
  * Comando para crear una nueva categoría de tipo.
  * Aplica validaciones de obligatoriedad y unicidad antes de persistir.
  */
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class TypeCategoryCreateCommand extends CreateCommandAbstract<TypeCategory, Long> {
 
     private final ITypeCategoryService typeCategoryService;
@@ -22,7 +29,9 @@ public class TypeCategoryCreateCommand extends CreateCommandAbstract<TypeCategor
      * @param typeCategoryService servicio de dominio para categorías
      * @param executor            ejecutor del flujo del comando
      */
-    public TypeCategoryCreateCommand(ITypeCategoryService typeCategoryService, Executor executor) {
+    @Autowired
+    public TypeCategoryCreateCommand(ITypeCategoryService typeCategoryService,
+                                     @Qualifier("asyncExecutor") Executor executor) {
         super(typeCategoryService, executor);
         this.typeCategoryService = typeCategoryService;
     }

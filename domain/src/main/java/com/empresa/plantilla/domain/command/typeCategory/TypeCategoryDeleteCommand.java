@@ -7,6 +7,11 @@ import com.empresa.plantilla.domain.command.DeleteCommandAbstract;
 import com.empresa.plantilla.domain.constants.DomainErrors;
 import com.empresa.plantilla.domain.model.Type;
 import com.empresa.plantilla.domain.model.TypeCategory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executor;
 
@@ -14,9 +19,9 @@ import java.util.concurrent.Executor;
  * Comando para eliminar una categoría de tipo.
  * Exige que no existan tipos asociados antes de permitir la eliminación.
  */
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class TypeCategoryDeleteCommand extends DeleteCommandAbstract<TypeCategory, Long> {
-
-    private final ITypeCategoryService typeCategoryService;
     private final ITypeService typeService;
 
     /**
@@ -26,12 +31,12 @@ public class TypeCategoryDeleteCommand extends DeleteCommandAbstract<TypeCategor
      * @param typeService         servicio de dominio para tipos
      * @param executor            ejecutor del flujo del comando
      */
+    @Autowired
     public TypeCategoryDeleteCommand(
             ITypeCategoryService typeCategoryService,
             ITypeService typeService,
-            Executor executor) {
+            @Qualifier("asyncExecutor") Executor executor) {
         super(typeCategoryService, executor);
-        this.typeCategoryService = typeCategoryService;
         this.typeService = typeService;
     }
 

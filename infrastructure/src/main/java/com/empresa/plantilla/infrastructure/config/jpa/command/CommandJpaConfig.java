@@ -20,7 +20,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.empresa.plantilla.infrastructure.adapters.output.repositories.commands",
+        basePackages = "com.empresa.plantilla.infrastructure.adapters.output.repositories.command",
         entityManagerFactoryRef = "commandEntityManagerFactory",
         transactionManagerRef = "commandTransactionManager"
 )

@@ -24,8 +24,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ApiResponseBuilder {
-
-    private final MessageSource messageSource;
+    private static final MessageSource messageSource = null;
 
     /**
      * Obtiene un mensaje internacionalizado.
@@ -34,27 +33,12 @@ public class ApiResponseBuilder {
      * @param params los parámetros opcionales
      * @return el mensaje traducido
      */
-    private String getMessage(String key, Object... params) {
+    private static String getMessage(String key, Object... params) {
         try {
             return messageSource.getMessage(key, params, LocaleContextHolder.getLocale());
         } catch (Exception e) {
             return key;
         }
-    }
-
-    /**
-     * Creates a successful response with a single object.
-     *
-     * @param <T> the type of the object
-     * @param obj the object to be included in the response
-     * @return a GenericResponse containing the object
-     */
-    public <T> GenericResponse<T> success(T obj) {
-        return GenericResponse.success(
-                HttpStatus.OK.value(),
-                getMessage(MessageKeys.SUCCESS_OPERATION),
-                obj
-        );
     }
 
     /**
@@ -74,21 +58,6 @@ public class ApiResponseBuilder {
     }
 
     /**
-     * Creates a successful response with a list of objects.
-     *
-     * @param <T>  the type of elements in the list
-     * @param list the list of objects to be included
-     * @return a GenericResponse containing the list
-     */
-    public <T> GenericResponse<T> successList(List<T> list) {
-        return GenericResponse.success(
-                HttpStatus.OK.value(),
-                getMessage(MessageKeys.SUCCESS_OPERATION),
-                list != null ? list : Collections.emptyList()
-        );
-    }
-
-    /**
      * Creates a successful response with a list of objects and custom message.
      *
      * @param <T>     the type of elements in the list
@@ -101,34 +70,6 @@ public class ApiResponseBuilder {
                 HttpStatus.OK.value(),
                 mensaje,
                 list != null ? list : Collections.emptyList()
-        );
-    }
-
-    /**
-     * Creates a paginated response from an IPageableResult.
-     *
-     * @param <T>            the type of elements in the result
-     * @param pageableResult the pageable result containing items and metadata
-     * @return a GenericResponse with pagination metadata
-     */
-    public <T> GenericResponse<T> paginated(IPageableResult<T> pageableResult) {
-        if (pageableResult == null || pageableResult.getTotalElements() == 0) {
-            return GenericResponse.success(
-                    HttpStatus.OK.value(),
-                    getMessage(MessageKeys.SUCCESS_NO_RESULTS),
-                    Collections.emptyList()
-            );
-        }
-
-        int totalPages = (int) Math.ceil((double) pageableResult.getTotalElements() / pageableResult.getPageSize());
-        int currentPage = pageableResult.getPageNumber() + 1;
-
-        return GenericResponse.successPaginated(
-                HttpStatus.OK.value(),
-                getMessage(MessageKeys.SUCCESS_PAGINATED),
-                pageableResult.getContent(),
-                pageableResult.getTotalElements().intValue(),
-                getMessage(MessageKeys.SUCCESS_PAGE_INFO, currentPage, totalPages)
         );
     }
 
@@ -158,82 +99,6 @@ public class ApiResponseBuilder {
                 pageableResult.getContent(),
                 pageableResult.getTotalElements().intValue(),
                 getMessage(MessageKeys.SUCCESS_PAGE_INFO, currentPage, totalPages)
-        );
-    }
-
-    /**
-     * Creates a paginated response from a list with manual pagination.
-     *
-     * @param <T>        the type of elements in the list
-     * @param list       the complete list of items
-     * @param pageNumber the current page number (zero-based)
-     * @param pageSize   the number of items per page
-     * @return a GenericResponse with pagination metadata
-     */
-    public <T> GenericResponse<T> paginatedFromList(List<T> list, Integer pageNumber, Integer pageSize) {
-        if (list == null || list.isEmpty()) {
-            return GenericResponse.success(
-                    HttpStatus.OK.value(),
-                    getMessage(MessageKeys.SUCCESS_NO_RESULTS),
-                    Collections.emptyList()
-            );
-        }
-
-        List<T> pagedList = paginateList(list, pageNumber, pageSize);
-        int totalPages = (int) Math.ceil((double) list.size() / pageSize);
-        int currentPage = pageNumber + 1;
-
-        return GenericResponse.successPaginated(
-                HttpStatus.OK.value(),
-                getMessage(MessageKeys.SUCCESS_PAGINATED),
-                pagedList,
-                list.size(),
-                getMessage(MessageKeys.SUCCESS_PAGE_INFO, currentPage, totalPages)
-        );
-    }
-
-    /**
-     * Creates a created response (HTTP 201) with the created object.
-     *
-     * @param <T> the type of the object
-     * @param obj the created object
-     * @return a GenericResponse with HTTP 201 status
-     */
-    public <T> GenericResponse<T> created(T obj) {
-        return GenericResponse.success(
-                HttpStatus.CREATED.value(),
-                getMessage(MessageKeys.SUCCESS_CREATED),
-                obj
-        );
-    }
-
-    /**
-     * Creates a created response (HTTP 201) with the created object and custom message.
-     *
-     * @param <T>     the type of the object
-     * @param obj     the created object
-     * @param mensaje custom message
-     * @return a GenericResponse with HTTP 201 status
-     */
-    public <T> GenericResponse<T> created(T obj, String mensaje) {
-        return GenericResponse.success(
-                HttpStatus.CREATED.value(),
-                mensaje,
-                obj
-        );
-    }
-
-    /**
-     * Creates a no content response (HTTP 204).
-     *
-     * @param <T> the type of the response
-     * @return a GenericResponse with HTTP 204 status
-     */
-    public <T> GenericResponse<T> noContent() {
-        return GenericResponse.success(
-                HttpStatus.NO_CONTENT.value(),
-                getMessage(MessageKeys.SUCCESS_NO_CONTENT),
-                (T) null
         );
     }
 
@@ -361,23 +226,5 @@ public class ApiResponseBuilder {
                 HttpStatus.FORBIDDEN.value(),
                 mensaje
         );
-    }
-
-    /**
-     * Extracts a page from a list based on page number and size.
-     *
-     * @param <T>        the type of elements in the list
-     * @param list       the complete list
-     * @param pageNumber the page number (zero-based)
-     * @param pageSize   the size of each page
-     * @return a sublist representing the requested page
-     */
-    private <T> List<T> paginateList(List<T> list, int pageNumber, int pageSize) {
-        int fromIndex = pageNumber * pageSize;
-        if (fromIndex >= list.size()) {
-            return Collections.emptyList();
-        }
-        int toIndex = Math.min(fromIndex + pageSize, list.size());
-        return list.subList(fromIndex, toIndex);
     }
 }

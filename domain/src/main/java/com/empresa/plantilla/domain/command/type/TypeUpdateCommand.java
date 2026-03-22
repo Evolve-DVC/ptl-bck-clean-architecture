@@ -7,6 +7,10 @@ import com.empresa.plantilla.domain.command.UpdateCommandAbstract;
 import com.empresa.plantilla.domain.constants.DomainErrors;
 import com.empresa.plantilla.domain.model.Type;
 import com.empresa.plantilla.domain.model.TypeCategory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executor;
 
@@ -14,6 +18,8 @@ import java.util.concurrent.Executor;
  * Comando para actualizar un tipo existente.
  * Aplica validaciones de integridad y unicidad previas a la actualización.
  */
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class TypeUpdateCommand extends UpdateCommandAbstract<Type, Long> {
 
     private final ITypeService typeService;
@@ -29,7 +35,7 @@ public class TypeUpdateCommand extends UpdateCommandAbstract<Type, Long> {
     public TypeUpdateCommand(
             ITypeService typeService,
             ITypeCategoryService typeCategoryService,
-            Executor executor) {
+            @Qualifier("asyncExecutor") Executor executor) {
         super(typeService, executor);
         this.typeService = typeService;
         this.typeCategoryService = typeCategoryService;

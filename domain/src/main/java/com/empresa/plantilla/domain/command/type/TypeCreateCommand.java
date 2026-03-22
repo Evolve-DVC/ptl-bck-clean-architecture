@@ -7,6 +7,10 @@ import com.empresa.plantilla.domain.command.CreateCommandAbstract;
 import com.empresa.plantilla.domain.constants.DomainErrors;
 import com.empresa.plantilla.domain.model.Type;
 import com.empresa.plantilla.domain.model.TypeCategory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executor;
 
@@ -14,6 +18,8 @@ import java.util.concurrent.Executor;
  * Comando para crear un nuevo tipo dentro de una categoría.
  * Aplica validaciones de integridad y unicidad previas a la persistencia.
  */
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class TypeCreateCommand extends CreateCommandAbstract<Type, Long> {
 
     private final ITypeService typeService;
@@ -29,7 +35,7 @@ public class TypeCreateCommand extends CreateCommandAbstract<Type, Long> {
     public TypeCreateCommand(
             ITypeService typeService,
             ITypeCategoryService typeCategoryService,
-            Executor executor) {
+            @Qualifier("asyncExecutor") Executor executor) {
         super(typeService, executor);
         this.typeService = typeService;
         this.typeCategoryService = typeCategoryService;

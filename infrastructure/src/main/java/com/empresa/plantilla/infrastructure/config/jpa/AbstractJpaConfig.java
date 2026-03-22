@@ -1,5 +1,6 @@
 package com.empresa.plantilla.infrastructure.config.jpa;
 
+import com.empresa.plantilla.infrastructure.constants.EntitiesConstants;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
@@ -36,7 +37,7 @@ public abstract class AbstractJpaConfig {
             boolean formatSql) {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan("co.com.dvc.infrastructure.entities");
+        em.setPackagesToScan(EntitiesConstants.PACKAGE_ENTITIES);
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

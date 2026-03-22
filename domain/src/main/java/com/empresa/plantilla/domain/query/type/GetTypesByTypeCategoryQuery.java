@@ -3,11 +3,13 @@ package com.empresa.plantilla.domain.query.type;
 import com.empresa.plantilla.domain.adapters.output.services.type.ITypeService;
 import com.empresa.plantilla.domain.model.Type;
 import com.empresa.plantilla.domain.query.ComboQueryAbstract;
+import org.springframework.stereotype.Component;
 
 /**
  * Query para obtener todos los tipos por categoria aplicando filtros y ordenamiento.
  * Retorna el listado completo (no paginado).
  */
+@Component
 public class GetTypesByTypeCategoryQuery extends ComboQueryAbstract<Type, Long> {
 
     /**
