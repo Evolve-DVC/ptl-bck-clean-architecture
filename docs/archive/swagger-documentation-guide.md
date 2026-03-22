@@ -1,4 +1,4 @@
-# Guia Completa de Documentacion de API con Swagger/OpenAPI
+﻿# Guia Completa de Documentacion de API con Swagger/OpenAPI
 
 Esta guia te ensena como documentar correctamente tus endpoints y DTOs usando anotaciones de OpenAPI 3.0.
 

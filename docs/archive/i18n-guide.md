@@ -1,36 +1,36 @@
-# Guía de Internacionalización (i18n)
+﻿# Gu├¡a de Internacionalizaci├│n (i18n)
 
-## 📋 Índice
+## ­ƒôï ├ìndice
 
-1. [Descripción General](#descripción-general)
+1. [Descripci├│n General](#descripci├│n-general)
 2. [Arquitectura](#arquitectura)
-3. [Configuración](#configuración)
-4. [Uso Básico](#uso-básico)
-5. [Ejemplos Prácticos](#ejemplos-prácticos)
+3. [Configuraci├│n](#configuraci├│n)
+4. [Uso B├ísico](#uso-b├ísico)
+5. [Ejemplos Pr├ícticos](#ejemplos-pr├ícticos)
 6. [Claves de Mensajes Disponibles](#claves-de-mensajes-disponibles)
 7. [Agregar Nuevos Idiomas](#agregar-nuevos-idiomas)
-8. [Mejores Prácticas](#mejores-prácticas)
+8. [Mejores Pr├ícticas](#mejores-pr├ícticas)
 
 ---
 
-## Descripción General
+## Descripci├│n General
 
-El sistema de internacionalización permite que la API responda en diferentes idiomas según las preferencias del cliente.
+El sistema de internacionalizaci├│n permite que la API responda en diferentes idiomas seg├║n las preferencias del cliente.
 
 **Idiomas soportados:**
 
-- 🇪🇸 Español (es) - **Por defecto**
-- 🇬🇧 Inglés (en)
-- 🇧🇷 Portugués (pt)
+- ­ƒç¬­ƒç© Espa├▒ol (es) - **Por defecto**
+- ­ƒç¼­ƒçº Ingl├®s (en)
+- ­ƒçº­ƒçÀ Portugu├®s (pt)
 
-**Características:**
+**Caracter├¡sticas:**
 
-- ✅ Mensajes de éxito internacionalizados
-- ✅ Mensajes de error internacionalizados
-- ✅ Detección automática del idioma desde header HTTP
-- ✅ Parámetros dinámicos en mensajes
-- ✅ Fallback al idioma por defecto
-- ✅ API REST stateless (sin sesiones)
+- Ô£à Mensajes de ├®xito internacionalizados
+- Ô£à Mensajes de error internacionalizados
+- Ô£à Detecci├│n autom├ítica del idioma desde header HTTP
+- Ô£à Par├ímetros din├ímicos en mensajes
+- Ô£à Fallback al idioma por defecto
+- Ô£à API REST stateless (sin sesiones)
 
 ---
 
@@ -39,39 +39,39 @@ El sistema de internacionalización permite que la API responda en diferentes id
 ### Componentes Principales
 
 ```
-┌─────────────────────────────────────────────────┐
-│           Cliente (REST API)                     │
-│  Header: Accept-Language: en, es, pt            │
-└──────────────────┬──────────────────────────────┘
-                   │
+ÔöîÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÉ
+Ôöé           Cliente (REST API)                     Ôöé
+Ôöé  Header: Accept-Language: en, es, pt            Ôöé
+ÔööÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö¼ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÿ
+                   Ôöé
                    v
-┌─────────────────────────────────────────────────┐
-│         LocaleResolver (Config)                  │
-│  - AcceptHeaderLocaleResolver                    │
-│  - Idiomas soportados: es, en, pt               │
-└──────────────────┬──────────────────────────────┘
-                   │
+ÔöîÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÉ
+Ôöé         LocaleResolver (Config)                  Ôöé
+Ôöé  - AcceptHeaderLocaleResolver                    Ôöé
+Ôöé  - Idiomas soportados: es, en, pt               Ôöé
+ÔööÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö¼ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÿ
+                   Ôöé
                    v
-┌─────────────────────────────────────────────────┐
-│         MessageService                           │
-│  - Resuelve mensajes según locale                │
-│  - Soporta parámetros dinámicos                  │
-└──────────────────┬──────────────────────────────┘
-                   │
+ÔöîÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÉ
+Ôöé         MessageService                           Ôöé
+Ôöé  - Resuelve mensajes seg├║n locale                Ôöé
+Ôöé  - Soporta par├ímetros din├ímicos                  Ôöé
+ÔööÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔö¼ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÿ
+                   Ôöé
                    v
-┌─────────────────────────────────────────────────┐
-│     Archivos de Recursos (.properties)          │
-│  - messages.properties (español)                 │
-│  - messages_en.properties (inglés)               │
-│  - messages_pt.properties (portugués)            │
-└─────────────────────────────────────────────────┘
+ÔöîÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÉ
+Ôöé     Archivos de Recursos (.properties)          Ôöé
+Ôöé  - messages.properties (espa├▒ol)                 Ôöé
+Ôöé  - messages_en.properties (ingl├®s)               Ôöé
+Ôöé  - messages_pt.properties (portugu├®s)            Ôöé
+ÔööÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÿ
 ```
 
 ### Clases Clave
 
-| Clase                | Ubicación                      | Función                            |
+| Clase                | Ubicaci├│n                      | Funci├│n                            |
 |----------------------|--------------------------------|------------------------------------|
-| `LocaleConfig`       | `application/config/i18`       | Configura resolución de idioma     |
+| `LocaleConfig`       | `application/config/i18`       | Configura resoluci├│n de idioma     |
 | `MessageService`     | `application/config/i18`       | Servicio para obtener mensajes     |
 | `MessageKeys`        | `commons/constants`            | Constantes con claves de mensajes  |
 | `ResponseBuilder`    | `commons/helper`               | Constructor de respuestas con i18n |
@@ -79,7 +79,7 @@ El sistema de internacionalización permite que la API responda en diferentes id
 
 ---
 
-## Configuración
+## Configuraci├│n
 
 ### 1. LocaleConfig
 
@@ -111,42 +111,42 @@ public class LocaleConfig {
 
 ### 2. Archivos de Propiedades
 
-**Ubicación:** `application/src/main/resources/`
+**Ubicaci├│n:** `application/src/main/resources/`
 
-- `messages.properties` - Español (por defecto)
-- `messages_en.properties` - Inglés
-- `messages_pt.properties` - Portugués
+- `messages.properties` - Espa├▒ol (por defecto)
+- `messages_en.properties` - Ingl├®s
+- `messages_pt.properties` - Portugu├®s
 
 **Formato:**
 
 ```properties
-# Sintaxis básica
+# Sintaxis b├ísica
 clave.mensaje=Texto del mensaje
-# Con parámetros (usar {0}, {1}, etc.)
-error.not.found=No se encontró el recurso con ID: {0}
-error.type.mismatch=El parámetro ''{0}'' debe ser de tipo {1}
+# Con par├ímetros (usar {0}, {1}, etc.)
+error.not.found=No se encontr├│ el recurso con ID: {0}
+error.type.mismatch=El par├ímetro ''{0}'' debe ser de tipo {1}
 ```
 
 ---
 
-## Uso Básico
+## Uso B├ísico
 
 ### 1. Especificar el Idioma desde el Cliente
 
 #### Usando Header HTTP (Recomendado)
 
 ```bash
-# Inglés
+# Ingl├®s
 curl -H "Accept-Language: en" http://localhost:8080/api/resource
 
-# Español
+# Espa├▒ol
 curl -H "Accept-Language: es" http://localhost:8080/api/resource
 
-# Portugués
+# Portugu├®s
 curl -H "Accept-Language: pt" http://localhost:8080/api/resource
 ```
 
-#### Usando Parámetro Query (Alternativa)
+#### Usando Par├ímetro Query (Alternativa)
 
 ```bash
 curl http://localhost:8080/api/resource?lang=en
@@ -154,7 +154,7 @@ curl http://localhost:8080/api/resource?lang=es
 curl http://localhost:8080/api/resource?lang=pt
 ```
 
-### 2. Usar MessageService en tu Código
+### 2. Usar MessageService en tu C├│digo
 
 ```java
 @Service
@@ -167,12 +167,12 @@ public class MiServicio {
         // Mensaje simple
         String msg = messageService.getMessage(MessageKeys.SUCCESS_OPERATION);
         
-        // Mensaje con parámetros
+        // Mensaje con par├ímetros
         String errorMsg = messageService.getMessage(
             MessageKeys.ERROR_INFRASTRUCTURE_NO_REGISTRO_BY_ID, 
             "12345"
         );
-        // Resultado: "No se encontró ningún registro con el ID: 12345"
+        // Resultado: "No se encontr├│ ning├║n registro con el ID: 12345"
     }
 }
 ```
@@ -194,7 +194,7 @@ public class MiController {
     public ResponseEntity<GenericResponse<MyDto>> getResource(@PathVariable Long id) {
         MyDto data = service.findById(id);
         
-        // Respuesta exitosa (mensaje internacionalizado automáticamente)
+        // Respuesta exitosa (mensaje internacionalizado autom├íticamente)
         return ResponseEntity.ok(responseBuilder.success(data));
     }
     
@@ -202,7 +202,7 @@ public class MiController {
     public ResponseEntity<GenericResponse<MyDto>> createResource(@RequestBody MyDto dto) {
         MyDto created = service.create(dto);
         
-        // Respuesta de creación (HTTP 201)
+        // Respuesta de creaci├│n (HTTP 201)
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(responseBuilder.created(created));
     }
@@ -219,9 +219,9 @@ public class MiController {
 
 ---
 
-## Ejemplos Prácticos
+## Ejemplos Pr├ícticos
 
-### Ejemplo 1: Respuesta de Éxito
+### Ejemplo 1: Respuesta de ├ëxito
 
 **Request:**
 
@@ -242,7 +242,7 @@ curl -H "Accept-Language: en" http://localhost:8080/api/users/1
 }
 ```
 
-**Con español:**
+**Con espa├▒ol:**
 
 ```bash
 curl -H "Accept-Language: es" http://localhost:8080/api/users/1
@@ -251,7 +251,7 @@ curl -H "Accept-Language: es" http://localhost:8080/api/users/1
 ```json
 {
   "code": 200,
-  "message": "Operación exitosa",
+  "message": "Operaci├│n exitosa",
   "data": {
     "id": 1,
     "name": "John Doe"
@@ -261,7 +261,7 @@ curl -H "Accept-Language: es" http://localhost:8080/api/users/1
 
 ### Ejemplo 2: Manejo de Errores
 
-**Request inválido:**
+**Request inv├ílido:**
 
 ```bash
 curl -H "Accept-Language: en" -X POST http://localhost:8080/api/users \
@@ -278,7 +278,7 @@ curl -H "Accept-Language: en" -X POST http://localhost:8080/api/users \
 }
 ```
 
-### Ejemplo 3: Paginación
+### Ejemplo 3: Paginaci├│n
 
 **Request:**
 
@@ -294,11 +294,11 @@ curl -H "Accept-Language: pt" http://localhost:8080/api/users?page=0&size=10
   "message": "Resultados paginados",
   "data": [...],
   "totalElements": 50,
-  "details": "Página 1 de 5"
+  "details": "P├ígina 1 de 5"
 }
 ```
 
-### Ejemplo 4: Lanzar Excepción Personalizada
+### Ejemplo 4: Lanzar Excepci├│n Personalizada
 
 ```java
 @Service
@@ -322,20 +322,20 @@ public class UserService {
 
 ## Claves de Mensajes Disponibles
 
-### Mensajes de Éxito
+### Mensajes de ├ëxito
 
-| Clave                | Español                         | Inglés                               | Portugués                          |
+| Clave                | Espa├▒ol                         | Ingl├®s                               | Portugu├®s                          |
 |----------------------|---------------------------------|--------------------------------------|------------------------------------|
-| `SUCCESS_OPERATION`  | Operación exitosa               | Operation successful                 | Operação bem-sucedida              |
+| `SUCCESS_OPERATION`  | Operaci├│n exitosa               | Operation successful                 | Opera├º├úo bem-sucedida              |
 | `SUCCESS_CREATED`    | Recurso creado exitosamente     | Resource created successfully        | Recurso criado com sucesso         |
-| `SUCCESS_NO_CONTENT` | Operación exitosa sin contenido | Successful operation with no content | Operação bem-sucedida sem conteúdo |
+| `SUCCESS_NO_CONTENT` | Operaci├│n exitosa sin contenido | Successful operation with no content | Opera├º├úo bem-sucedida sem conte├║do |
 | `SUCCESS_PAGINATED`  | Resultados paginados            | Paginated results                    | Resultados paginados               |
 | `SUCCESS_NO_RESULTS` | No se encontraron resultados    | No results found                     | Nenhum resultado encontrado        |
-| `SUCCESS_PAGE_INFO`  | Página {0} de {1}               | Page {0} of {1}                      | Página {0} de {1}                  |
+| `SUCCESS_PAGE_INFO`  | P├ígina {0} de {1}               | Page {0} of {1}                      | P├ígina {0} de {1}                  |
 
 ### Errores Generales
 
-| Clave                   | Parámetros | Descripción                |
+| Clave                   | Par├ímetros | Descripci├│n                |
 |-------------------------|------------|----------------------------|
 | `ERROR_INTERNAL_SERVER` | -          | Error interno del servidor |
 | `ERROR_BAD_REQUEST`     | -          | Solicitud incorrecta       |
@@ -344,42 +344,42 @@ public class UserService {
 | `ERROR_FORBIDDEN`       | -          | Acceso prohibido           |
 | `ERROR_NULL_POINTER`    | -          | Referencia nula detectada  |
 
-### Errores de Validación
+### Errores de Validaci├│n
 
-| Clave                            | Parámetros                 | Ejemplo                                       |
+| Clave                            | Par├ímetros                 | Ejemplo                                       |
 |----------------------------------|----------------------------|-----------------------------------------------|
-| `ERROR_VALIDATION_PREFIX`        | -                          | "Errores de validación"                       |
-| `ERROR_CONSTRAINT_VIOLATION`     | {0} errores                | "Errores de validación: name: required"       |
-| `ERROR_ILLEGAL_ARGUMENT`         | {0} mensaje                | "Argumento inválido: valor no permitido"      |
-| `ERROR_TYPE_MISMATCH`            | {0} param, {1} tipo        | "El parámetro 'id' debe ser de tipo Long"     |
-| `ERROR_JSON_INVALID`             | -                          | "Formato JSON inválido"                       |
-| `ERROR_METHOD_NOT_SUPPORTED`     | {0} método, {1} soportados | "Método HTTP 'DELETE' no soportado"           |
+| `ERROR_VALIDATION_PREFIX`        | -                          | "Errores de validaci├│n"                       |
+| `ERROR_CONSTRAINT_VIOLATION`     | {0} errores                | "Errores de validaci├│n: name: required"       |
+| `ERROR_ILLEGAL_ARGUMENT`         | {0} mensaje                | "Argumento inv├ílido: valor no permitido"      |
+| `ERROR_TYPE_MISMATCH`            | {0} param, {1} tipo        | "El par├ímetro 'id' debe ser de tipo Long"     |
+| `ERROR_JSON_INVALID`             | -                          | "Formato JSON inv├ílido"                       |
+| `ERROR_METHOD_NOT_SUPPORTED`     | {0} m├®todo, {1} soportados | "M├®todo HTTP 'DELETE' no soportado"           |
 | `ERROR_MEDIA_TYPE_NOT_SUPPORTED` | {0} tipo                   | "Tipo de contenido 'text/plain' no soportado" |
-| `ERROR_PARAMETER_MISSING`        | {0} nombre                 | "Parámetro requerido 'id' no proporcionado"   |
+| `ERROR_PARAMETER_MISSING`        | {0} nombre                 | "Par├ímetro requerido 'id' no proporcionado"   |
 | `ERROR_ENDPOINT_NOT_FOUND`       | {0} URL                    | "Endpoint '/api/invalid' no encontrado"       |
 
 ### Errores de Dominio
 
-| Clave                              | Descripción            |
+| Clave                              | Descripci├│n            |
 |------------------------------------|------------------------|
-| `ERROR_DOMAIN_VALID_ENUM`          | Valor de enum inválido |
-| `ERROR_DOMAIN_VALID_ID_EMPTY`      | ID vacío               |
-| `ERROR_DOMAIN_VALID_CONTEXTO_NULL` | Contexto vacío         |
-| `ERROR_DOMAIN_VALID_CREATE_EMPTY`  | Campo createBy vacío   |
-| `ERROR_DOMAIN_VALID_UPDATE_EMPTY`  | Campo updateBy vacío   |
+| `ERROR_DOMAIN_VALID_ENUM`          | Valor de enum inv├ílido |
+| `ERROR_DOMAIN_VALID_ID_EMPTY`      | ID vac├¡o               |
+| `ERROR_DOMAIN_VALID_CONTEXTO_NULL` | Contexto vac├¡o         |
+| `ERROR_DOMAIN_VALID_CREATE_EMPTY`  | Campo createBy vac├¡o   |
+| `ERROR_DOMAIN_VALID_UPDATE_EMPTY`  | Campo updateBy vac├¡o   |
 
 ### Errores de Infraestructura
 
-| Clave                                    | Parámetros | Ejemplo                                           |
+| Clave                                    | Par├ímetros | Ejemplo                                           |
 |------------------------------------------|------------|---------------------------------------------------|
-| `ERROR_INFRASTRUCTURE_NO_REGISTRO_BY_ID` | {0} ID     | "No se encontró ningún registro con el ID: 12345" |
+| `ERROR_INFRASTRUCTURE_NO_REGISTRO_BY_ID` | {0} ID     | "No se encontr├│ ning├║n registro con el ID: 12345" |
 
 ### Errores de Base de Datos
 
-| Clave                  | Descripción                      |
+| Clave                  | Descripci├│n                      |
 |------------------------|----------------------------------|
-| `ERROR_DATA_INTEGRITY` | Violación de integridad de datos |
-| `ERROR_FK_CONSTRAINT`  | Restricción de clave foránea     |
+| `ERROR_DATA_INTEGRITY` | Violaci├│n de integridad de datos |
+| `ERROR_FK_CONSTRAINT`  | Restricci├│n de clave for├ínea     |
 
 ---
 
@@ -390,9 +390,9 @@ public class UserService {
 Crear archivo `messages_fr.properties` en `application/src/main/resources/`:
 
 ```properties
-# MENSAJES DE ÉXITO
-success.operation = Opération réussie
-success.created = Ressource créée avec succès
+# MENSAJES DE ├ëXITO
+success.operation = Op├®ration r├®ussie
+success.created = Ressource cr├®├®e avec succ├¿s
 # ... resto de mensajes
 ```
 
@@ -407,7 +407,7 @@ public LocaleResolver localeResolver() {
             Locale.forLanguageTag("es"),
             Locale.forLanguageTag("en"),
             Locale.forLanguageTag("pt"),
-            Locale.forLanguageTag("fr")  // ← Agregar nuevo idioma
+            Locale.forLanguageTag("fr")  // ÔåÉ Agregar nuevo idioma
     ));
     return localeResolver;
 }
@@ -421,9 +421,9 @@ curl -H "Accept-Language: fr" http://localhost:8080/api/resource
 
 ---
 
-## Mejores Prácticas
+## Mejores Pr├ícticas
 
-### ✅ DO
+### Ô£à DO
 
 1. **Usar constantes de MessageKeys**
    ```java
@@ -438,7 +438,7 @@ curl -H "Accept-Language: fr" http://localhost:8080/api/resource
    }
    ```
 
-3. **Usar parámetros para mensajes dinámicos**
+3. **Usar par├ímetros para mensajes din├ímicos**
    ```java
    messageService.getMessage(MessageKeys.ERROR_NOT_FOUND, "Usuario", userId);
    ```
@@ -449,34 +449,34 @@ curl -H "Accept-Language: fr" http://localhost:8080/api/resource
 5. **Usar UTF-8 en archivos properties**
     - Ya configurado en `messageSource.setDefaultEncoding("UTF-8")`
 
-### ❌ DON'T
+### ÔØî DON'T
 
-1. **No hardcodear mensajes en el código**
+1. **No hardcodear mensajes en el c├│digo**
    ```java
-   // ❌ MAL
-   return ResponseEntity.ok("Operación exitosa");
+   // ÔØî MAL
+   return ResponseEntity.ok("Operaci├│n exitosa");
    
-   // ✅ BIEN
+   // Ô£à BIEN
    return ResponseEntity.ok(
        responseBuilder.success(data)
    );
    ```
 
-2. **No usar strings mágicos**
+2. **No usar strings m├ígicos**
    ```java
-   // ❌ MAL
+   // ÔØî MAL
    messageService.getMessage("success.operation");
    
-   // ✅ BIEN
+   // Ô£à BIEN
    messageService.getMessage(MessageKeys.SUCCESS_OPERATION);
    ```
 
 3. **No concatenar mensajes manualmente**
    ```java
-   // ❌ MAL
+   // ÔØî MAL
    String msg = "Error con ID: " + id;
    
-   // ✅ BIEN
+   // Ô£à BIEN
    String msg = messageService.getMessage(
        MessageKeys.ERROR_INFRASTRUCTURE_NO_REGISTRO_BY_ID, 
        id
@@ -504,7 +504,7 @@ class MessageServiceTest {
     void testGetMessage_Spanish() {
         LocaleContextHolder.setLocale(Locale.forLanguageTag("es"));
         String msg = messageService.getMessage(MessageKeys.SUCCESS_OPERATION);
-        assertEquals("Operación exitosa", msg);
+        assertEquals("Operaci├│n exitosa", msg);
     }
     
     @Test
@@ -521,7 +521,7 @@ class MessageServiceTest {
             MessageKeys.ERROR_INFRASTRUCTURE_NO_REGISTRO_BY_ID, 
             "12345"
         );
-        assertEquals("No se encontró ningún registro con el ID: 12345", msg);
+        assertEquals("No se encontr├│ ning├║n registro con el ID: 12345", msg);
     }
 }
 ```
@@ -548,7 +548,7 @@ class UserControllerTest {
         mockMvc.perform(get("/api/users/1")
                 .header("Accept-Language", "es"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Operación exitosa"));
+                .andExpect(jsonPath("$.message").value("Operaci├│n exitosa"));
     }
 }
 ```
@@ -557,14 +557,14 @@ class UserControllerTest {
 
 ## Troubleshooting
 
-### Problema: Los mensajes aparecen en inglés en lugar de español
+### Problema: Los mensajes aparecen en ingl├®s en lugar de espa├▒ol
 
-**Causa:** El cliente no está enviando el header `Accept-Language` o está configurado incorrectamente.
+**Causa:** El cliente no est├í enviando el header `Accept-Language` o est├í configurado incorrectamente.
 
-**Solución:**
+**Soluci├│n:**
 
 ```bash
-# Asegurar que el header esté presente
+# Asegurar que el header est├® presente
 curl -H "Accept-Language: es" http://localhost:8080/api/resource
 ```
 
@@ -572,7 +572,7 @@ curl -H "Accept-Language: es" http://localhost:8080/api/resource
 
 **Causa:** La clave no existe en el archivo de properties del idioma solicitado.
 
-**Solución:** Verificar que la clave esté presente en todos los archivos:
+**Soluci├│n:** Verificar que la clave est├® presente en todos los archivos:
 
 - `messages.properties`
 - `messages_en.properties`
@@ -580,40 +580,40 @@ curl -H "Accept-Language: es" http://localhost:8080/api/resource
 
 ### Problema: Caracteres especiales aparecen mal codificados
 
-**Causa:** El archivo properties no está en UTF-8.
+**Causa:** El archivo properties no est├í en UTF-8.
 
-**Solución:**
+**Soluci├│n:**
 
-1. Asegurar que el archivo esté guardado en UTF-8
-2. Verificar que `messageSource.setDefaultEncoding("UTF-8")` esté configurado
+1. Asegurar que el archivo est├® guardado en UTF-8
+2. Verificar que `messageSource.setDefaultEncoding("UTF-8")` est├® configurado
 
 ---
 
 ## Resumen
 
-✅ **Sistema completamente implementado**
+Ô£à **Sistema completamente implementado**
 
-- MessageService para gestión de mensajes
+- MessageService para gesti├│n de mensajes
 - MessageKeys con todas las constantes
 - ResponseBuilder internacionalizado
 - ErrorHandlerConfig internacionalizado
 - Archivos de properties para es, en, pt
 
-✅ **Listo para usar**
+Ô£à **Listo para usar**
 
 - Inyectar `MessageService` o `ResponseBuilder`
 - Usar constantes de `MessageKeys`
 - Especificar idioma con header `Accept-Language`
 
-✅ **Extensible**
+Ô£à **Extensible**
 
-- Agregar nuevos idiomas fácilmente
+- Agregar nuevos idiomas f├ícilmente
 - Agregar nuevas claves de mensajes
 - Personalizar mensajes por proyecto
 
 ---
 
-**Autor:** Sistema de Internacionalización  
+**Autor:** Sistema de Internacionalizaci├│n  
 **Fecha:** 2025  
-**Versión:** 1.0
+**Versi├│n:** 1.0
 

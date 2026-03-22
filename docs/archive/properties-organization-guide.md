@@ -1,15 +1,15 @@
-# Guia de Organizacion de Properties
+﻿# Guia de Organizacion de Properties
 
 ## Filosofia de Configuracion
 
 Este proyecto sigue una estrategia de configuracion en dos niveles:
 
-1. **application.properties** → Configuraciones **GENERALES** (para Config Server)
-2. **application-{profile}.properties** → Configuraciones **ESPECIFICAS** por ambiente
+1. **application.properties** ÔåÆ Configuraciones **GENERALES** (para Config Server)
+2. **application-{profile}.properties** ÔåÆ Configuraciones **ESPECIFICAS** por ambiente
 
 ---
 
-## 📁 application.properties (Base - Config Server)
+## ­ƒôü application.properties (Base - Config Server)
 
 ### Proposito
 
@@ -19,7 +19,7 @@ Contiene configuraciones **estructurales y generales** que:
 - Definen la estructura y comportamiento de frameworks
 - Seran movidas al servidor de configuracion centralizada (Spring Cloud Config)
 
-### Que VA en este archivo ✅
+### Que VA en este archivo Ô£à
 
 #### 1. Configuraciones Estructurales de Base de Datos
 
@@ -74,20 +74,20 @@ spring.kafka.properties.security.protocol=PLAINTEXT
 spring.kafka.producer.acks=1
 ```
 
-### Que NO VA en este archivo ❌
+### Que NO VA en este archivo ÔØî
 
-- ❌ URLs de base de datos
-- ❌ Credenciales (usernames, passwords)
-- ❌ Pool sizes especificos
-- ❌ Server ports
-- ❌ Bootstrap servers de Kafka
-- ❌ URLs de servicios externos
-- ❌ Niveles de logging especificos
-- ❌ CORS origins especificos
+- ÔØî URLs de base de datos
+- ÔØî Credenciales (usernames, passwords)
+- ÔØî Pool sizes especificos
+- ÔØî Server ports
+- ÔØî Bootstrap servers de Kafka
+- ÔØî URLs de servicios externos
+- ÔØî Niveles de logging especificos
+- ÔØî CORS origins especificos
 
 ---
 
-## 📁 application-dev.properties (Desarrollo)
+## ­ƒôü application-dev.properties (Desarrollo)
 
 ### Proposito
 
@@ -98,7 +98,7 @@ Contiene configuraciones **especificas del ambiente de desarrollo** que:
 - Definen conexiones y recursos locales
 - Se repiten en cada perfil (dev, staging, prod) con valores diferentes
 
-### Que VA en este archivo ✅
+### Que VA en este archivo Ô£à
 
 #### 1. Configuracion del Servidor
 
@@ -184,45 +184,45 @@ jwt.expirationMs=3600000
 
 ---
 
-## 📊 Tabla de Decision Rapida
+## ­ƒôè Tabla de Decision Rapida
 
 | Configuracion               | application.properties | application-{profile}.properties |
 |-----------------------------|------------------------|----------------------------------|
-| **Dialect de Hibernate**    | ✅ Si                   | ❌ No                             |
-| **Schema por defecto**      | ✅ Si                   | ❌ No                             |
-| **DDL strategy default**    | ✅ Si (none)            | ✅ Si (override: update/validate) |
-| **Driver JDBC**             | ✅ Si                   | ❌ No                             |
-| **Timeouts de Hikari**      | ✅ Si                   | ❌ No                             |
-| **Pool names**              | ✅ Si                   | ❌ No                             |
-| **URL de base de datos**    | ❌ No                   | ✅ Si                             |
-| **Credenciales de BD**      | ❌ No                   | ✅ Si                             |
-| **Pool sizes (max/min)**    | ❌ No                   | ✅ Si                             |
-| **Server port**             | ❌ No                   | ✅ Si                             |
-| **Swagger enabled**         | ✅ Si                   | ❌ No                             |
-| **Swagger path**            | ✅ Si                   | ❌ No                             |
-| **Swagger UI config**       | ✅ Si                   | ❌ No                             |
-| **Kafka auto-offset-reset** | ✅ Si                   | ❌ No                             |
-| **Kafka security protocol** | ✅ Si                   | ❌ No                             |
-| **Kafka bootstrap-servers** | ❌ No                   | ✅ Si                             |
-| **Kafka group-id**          | ❌ No                   | ✅ Si                             |
-| **CORS allowed origins**    | ❌ No                   | ✅ Si                             |
-| **Logging patterns**        | ✅ Si                   | ❌ No                             |
-| **Logging levels**          | ❌ No                   | ✅ Si                             |
-| **URLs servicios externos** | ❌ No                   | ✅ Si                             |
-| **JWT secret**              | ❌ No                   | ✅ Si                             |
-| **Multipart sizes**         | ✅ Si                   | ❌ No                             |
+| **Dialect de Hibernate**    | Ô£à Si                   | ÔØî No                             |
+| **Schema por defecto**      | Ô£à Si                   | ÔØî No                             |
+| **DDL strategy default**    | Ô£à Si (none)            | Ô£à Si (override: update/validate) |
+| **Driver JDBC**             | Ô£à Si                   | ÔØî No                             |
+| **Timeouts de Hikari**      | Ô£à Si                   | ÔØî No                             |
+| **Pool names**              | Ô£à Si                   | ÔØî No                             |
+| **URL de base de datos**    | ÔØî No                   | Ô£à Si                             |
+| **Credenciales de BD**      | ÔØî No                   | Ô£à Si                             |
+| **Pool sizes (max/min)**    | ÔØî No                   | Ô£à Si                             |
+| **Server port**             | ÔØî No                   | Ô£à Si                             |
+| **Swagger enabled**         | Ô£à Si                   | ÔØî No                             |
+| **Swagger path**            | Ô£à Si                   | ÔØî No                             |
+| **Swagger UI config**       | Ô£à Si                   | ÔØî No                             |
+| **Kafka auto-offset-reset** | Ô£à Si                   | ÔØî No                             |
+| **Kafka security protocol** | Ô£à Si                   | ÔØî No                             |
+| **Kafka bootstrap-servers** | ÔØî No                   | Ô£à Si                             |
+| **Kafka group-id**          | ÔØî No                   | Ô£à Si                             |
+| **CORS allowed origins**    | ÔØî No                   | Ô£à Si                             |
+| **Logging patterns**        | Ô£à Si                   | ÔØî No                             |
+| **Logging levels**          | ÔØî No                   | Ô£à Si                             |
+| **URLs servicios externos** | ÔØî No                   | Ô£à Si                             |
+| **JWT secret**              | ÔØî No                   | Ô£à Si                             |
+| **Multipart sizes**         | Ô£à Si                   | ÔØî No                             |
 
 ---
 
-## 🔄 Estrategia de Perfiles
+## ­ƒöä Estrategia de Perfiles
 
 ### Estructura Recomendada
 
 ```
 application.properties           (Base - Config Server)
-├── application-dev.properties   (Desarrollo)
-├── application-staging.properties (Staging/QA)
-└── application-prod.properties  (Produccion)
+Ôö£ÔöÇÔöÇ application-dev.properties   (Desarrollo)
+Ôö£ÔöÇÔöÇ application-staging.properties (Staging/QA)
+ÔööÔöÇÔöÇ application-prod.properties  (Produccion)
 ```
 
 ### Ejemplo: Pool Sizes por Ambiente
@@ -261,28 +261,28 @@ spring.datasource.command.hikari.minimum-idle=10
 
 ---
 
-## 🎯 Reglas de Oro
+## ­ƒÄ» Reglas de Oro
 
-### 1. Preguntate: "¿Este valor cambia entre ambientes?"
+### 1. Preguntate: "┬┐Este valor cambia entre ambientes?"
 
-- **SI cambia** → `application-{profile}.properties`
-- **NO cambia** → `application.properties`
+- **SI cambia** ÔåÆ `application-{profile}.properties`
+- **NO cambia** ÔåÆ `application.properties`
 
-### 2. Preguntate: "¿Es una credencial o URL?"
+### 2. Preguntate: "┬┐Es una credencial o URL?"
 
-- **SI** → `application-{profile}.properties`
-- **NO** → Evalua con regla 1
+- **SI** ÔåÆ `application-{profile}.properties`
+- **NO** ÔåÆ Evalua con regla 1
 
-### 3. Preguntate: "¿Es una configuracion estructural del framework?"
+### 3. Preguntate: "┬┐Es una configuracion estructural del framework?"
 
-- **SI** → `application.properties`
-- **NO** → Evalua con regla 1
+- **SI** ÔåÆ `application.properties`
+- **NO** ÔåÆ Evalua con regla 1
 
 ---
 
-## 📝 Ejemplos Practicos
+## ­ƒôØ Ejemplos Practicos
 
-### ✅ CORRECTO
+### Ô£à CORRECTO
 
 **application.properties**:
 
@@ -304,63 +304,63 @@ spring.datasource.command.url=jdbc:postgresql://localhost:5432/dev_db
 spring.datasource.command.hikari.maximum-pool-size=5
 ```
 
-### ❌ INCORRECTO
+### ÔØî INCORRECTO
 
 **application.properties**:
 
 ```properties
-# ❌ NO: URL especifica (cambia por ambiente)
+# ÔØî NO: URL especifica (cambia por ambiente)
 spring.datasource.command.url=jdbc:postgresql://localhost:5432/dev_db
 
-# ❌ NO: Credenciales (especificas por ambiente)
+# ÔØî NO: Credenciales (especificas por ambiente)
 spring.datasource.command.username=dev_user
 spring.datasource.command.password=dev_password
 
-# ❌ NO: Pool size (varia por ambiente)
+# ÔØî NO: Pool size (varia por ambiente)
 spring.datasource.command.hikari.maximum-pool-size=5
 
-# ❌ NO: Server port (especifico por ambiente)
+# ÔØî NO: Server port (especifico por ambiente)
 server.port=8080
 ```
 
 ---
 
-## 🚀 Migracion a Config Server
+## ­ƒÜÇ Migracion a Config Server
 
 Cuando migres a Spring Cloud Config Server:
 
-1. **application.properties** → Se mueve completo al repositorio de configuracion
-2. **application-{profile}.properties** → Se crean en el repositorio con valores especificos
+1. **application.properties** ÔåÆ Se mueve completo al repositorio de configuracion
+2. **application-{profile}.properties** ÔåÆ Se crean en el repositorio con valores especificos
 3. Los archivos locales se pueden eliminar o mantener como fallback
 
 ### Ejemplo de estructura en Config Server:
 
 ```
 config-repo/
-├── bck-plantilla.properties           (de application.properties)
-├── bck-plantilla-dev.properties       (de application-dev.properties)
-├── bck-plantilla-staging.properties   (de application-staging.properties)
-└── bck-plantilla-prod.properties      (de application-prod.properties)
+Ôö£ÔöÇÔöÇ bck-plantilla.properties           (de application.properties)
+Ôö£ÔöÇÔöÇ bck-plantilla-dev.properties       (de application-dev.properties)
+Ôö£ÔöÇÔöÇ bck-plantilla-staging.properties   (de application-staging.properties)
+ÔööÔöÇÔöÇ bck-plantilla-prod.properties      (de application-prod.properties)
 ```
 
 ---
 
-## ✅ Checklist de Validacion
+## Ô£à Checklist de Validacion
 
 Antes de agregar una propiedad, verifica:
 
-- [ ] ¿Es una configuracion estructural de framework? → application.properties
-- [ ] ¿Es un valor que cambia entre ambientes? → application-{profile}.properties
-- [ ] ¿Es una credencial o secret? → application-{profile}.properties (NUNCA en base)
-- [ ] ¿Es una URL de servicio externo? → application-{profile}.properties
-- [ ] ¿Es un nivel de logging? → application-{profile}.properties
-- [ ] ¿Es un pool size? → application-{profile}.properties
-- [ ] ¿Es un timeout o pattern? → application.properties
-- [ ] ¿Es una configuracion de Swagger? → application.properties
+- [ ] ┬┐Es una configuracion estructural de framework? ÔåÆ application.properties
+- [ ] ┬┐Es un valor que cambia entre ambientes? ÔåÆ application-{profile}.properties
+- [ ] ┬┐Es una credencial o secret? ÔåÆ application-{profile}.properties (NUNCA en base)
+- [ ] ┬┐Es una URL de servicio externo? ÔåÆ application-{profile}.properties
+- [ ] ┬┐Es un nivel de logging? ÔåÆ application-{profile}.properties
+- [ ] ┬┐Es un pool size? ÔåÆ application-{profile}.properties
+- [ ] ┬┐Es un timeout o pattern? ÔåÆ application.properties
+- [ ] ┬┐Es una configuracion de Swagger? ÔåÆ application.properties
 
 ---
 
-## 📚 Referencias
+## ­ƒôÜ Referencias
 
 - [Spring Boot Externalized Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config)
 - [Spring Cloud Config](https://spring.io/projects/spring-cloud-config)

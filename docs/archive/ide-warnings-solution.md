@@ -1,4 +1,4 @@
-# Solucion: Cannot resolve configuration property
+﻿# Solucion: Cannot resolve configuration property
 
 ## Problema
 
@@ -14,14 +14,14 @@ Cannot resolve configuration property 'spring.datasource.command.hikari.poolName
 
 Estos warnings aparecen porque:
 
-1. **Propiedades personalizadas de Hikari**: Spring Boot no genera automáticamente metadata para prefijos personalizados
+1. **Propiedades personalizadas de Hikari**: Spring Boot no genera autom├íticamente metadata para prefijos personalizados
    como `command` y `query`
 2. **Falta el Configuration Processor**: El IDE necesita `spring-boot-configuration-processor` para generar metadata de
    autocompletado
 
-## Solución Aplicada
+## Soluci├│n Aplicada
 
-### 1. Corrección de Sintaxis ✅
+### 1. Correcci├│n de Sintaxis Ô£à
 
 Se corrigieron las propiedades de **kebab-case** a **camelCase**:
 
@@ -30,15 +30,15 @@ Se corrigieron las propiedades de **kebab-case** a **camelCase**:
 spring.datasource.command.hikari.idle-timeout=300000
 spring.datasource.command.hikari.connection-timeout=20000
 spring.datasource.command.hikari.pool-name=CommandHikariPool
-# DESPUÉS (Correcto)
+# DESPU├ëS (Correcto)
 spring.datasource.command.hikari.idleTimeout=300000
 spring.datasource.command.hikari.connectionTimeout=20000
 spring.datasource.command.hikari.poolName=CommandHikariPool
 ```
 
-### 2. Agregado Configuration Processor ✅
+### 2. Agregado Configuration Processor Ô£à
 
-Se agregó `spring-boot-configuration-processor` en `build.gradle`:
+Se agreg├│ `spring-boot-configuration-processor` en `build.gradle`:
 
 **infrastructure/build.gradle**:
 
@@ -58,7 +58,7 @@ dependencies {
 }
 ```
 
-### 3. Actualización del Código Java ✅
+### 3. Actualizaci├│n del C├│digo Java Ô£à
 
 Se actualizaron las anotaciones `@Value` en:
 
@@ -82,18 +82,18 @@ int maximumPoolSize,
 int minimumIdle
 ```
 
-## ¿Por qué persisten los warnings?
+## ┬┐Por qu├® persisten los warnings?
 
 Los warnings pueden persistir temporalmente porque:
 
-1. **Caché del IDE**: IntelliJ IDEA cachea la información de propiedades
-2. **Metadata no generada aún**: El Configuration Processor genera metadata en la compilación
+1. **Cach├® del IDE**: IntelliJ IDEA cachea la informaci├│n de propiedades
+2. **Metadata no generada a├║n**: El Configuration Processor genera metadata en la compilaci├│n
 3. **Propiedades personalizadas**: Los prefijos `command` y `query` son personalizados y el IDE no los detecta
-   automáticamente
+   autom├íticamente
 
 ## Pasos para Eliminar los Warnings
 
-### Opción 1: Refrescar el Proyecto (Recomendado)
+### Opci├│n 1: Refrescar el Proyecto (Recomendado)
 
 1. **Recompilar el proyecto**:
    ```bash
@@ -102,17 +102,17 @@ Los warnings pueden persistir temporalmente porque:
 
 2. **Reimportar Gradle en IntelliJ**:
     - Abrir la vista de Gradle (View > Tool Windows > Gradle)
-    - Clic en el icono de refrescar (🔄)
+    - Clic en el icono de refrescar (­ƒöä)
 
-3. **Invalidar cachés del IDE**:
+3. **Invalidar cach├®s del IDE**:
     - `File > Invalidate Caches / Restart`
     - Seleccionar "Invalidate and Restart"
 
-### Opción 2: Suprimir Warnings (Temporal)
+### Opci├│n 2: Suprimir Warnings (Temporal)
 
-Si los warnings persisten pero el código funciona correctamente, puedes suprimirlos:
+Si los warnings persisten pero el c├│digo funciona correctamente, puedes suprimirlos:
 
-**En el archivo properties** (línea por línea):
+**En el archivo properties** (l├¡nea por l├¡nea):
 
 ```properties
 #noinspection SpringBootApplicationProperties
@@ -125,17 +125,17 @@ spring.datasource.command.hikari.idleTimeout=300000
 2. Buscar "Spring Boot"
 3. Desmarcar "Configuration properties"
 
-## Importante: ¿Son Errores Reales?
+## Importante: ┬┐Son Errores Reales?
 
-❌ **NO**, estos son **warnings del IDE**, no errores de compilación.
+ÔØî **NO**, estos son **warnings del IDE**, no errores de compilaci├│n.
 
-✅ El código **funcionará correctamente** en runtime porque:
+Ô£à El c├│digo **funcionar├í correctamente** en runtime porque:
 
 - Spring Boot reconoce las propiedades en camelCase
 - HikariCP configura los pools correctamente
 - Los valores se inyectan correctamente con `@Value`
 
-## Verificación
+## Verificaci├│n
 
 Para verificar que las propiedades funcionan:
 
@@ -143,9 +143,9 @@ Para verificar que las propiedades funcionan:
    ```bash
    ./gradlew clean build
    ```
-   Debe compilar sin errores ✅
+   Debe compilar sin errores Ô£à
 
-2. **Ejecutar la aplicación**:
+2. **Ejecutar la aplicaci├│n**:
    ```bash
    ./gradlew bootRun
    ```
@@ -157,14 +157,14 @@ Para verificar que las propiedades funcionan:
    HikariPool-1 - Start completed.
    ```
 
-Si ves estos logs, significa que Hikari se configuró correctamente.
+Si ves estos logs, significa que Hikari se configur├│ correctamente.
 
 ## Propiedades de Hikari Reconocidas por el IDE
 
-Estas propiedades **SÍ** son reconocidas automáticamente por el IDE:
+Estas propiedades **S├ì** son reconocidas autom├íticamente por el IDE:
 
 ```properties
-# Con prefijo estándar spring.datasource.hikari
+# Con prefijo est├índar spring.datasource.hikari
 spring.datasource.hikari.maximumPoolSize=10
 spring.datasource.hikari.minimumIdle=5
 spring.datasource.hikari.idleTimeout=300000
@@ -198,26 +198,26 @@ public class CommandHikariProperties {
 }
 ```
 
-Esto generaría metadata automáticamente y el IDE reconocería las propiedades.
+Esto generar├¡a metadata autom├íticamente y el IDE reconocer├¡a las propiedades.
 
 ## Resumen
 
 | Aspecto                              | Estado                                   |
 |--------------------------------------|------------------------------------------|
-| **Sintaxis corregida**               | ✅ Correcto (camelCase)                   |
-| **Código Java actualizado**          | ✅ @Value con camelCase                   |
-| **Configuration Processor agregado** | ✅ En build.gradle                        |
-| **Proyecto compila**                 | ✅ Sin errores                            |
-| **Warnings del IDE**                 | ⚠️ Normales para prefijos personalizados |
-| **Funcionamiento en runtime**        | ✅ Perfecto                               |
+| **Sintaxis corregida**               | Ô£à Correcto (camelCase)                   |
+| **C├│digo Java actualizado**          | Ô£à @Value con camelCase                   |
+| **Configuration Processor agregado** | Ô£à En build.gradle                        |
+| **Proyecto compila**                 | Ô£à Sin errores                            |
+| **Warnings del IDE**                 | ÔÜá´©Å Normales para prefijos personalizados |
+| **Funcionamiento en runtime**        | Ô£à Perfecto                               |
 
-## Conclusión
+## Conclusi├│n
 
-✅ **El problema está resuelto** desde el punto de vista funcional.  
-⚠️ Los warnings del IDE son cosméticos y no afectan el funcionamiento.  
-🔄 Después de refrescar Gradle y el IDE, los warnings deberían minimizarse.
+Ô£à **El problema est├í resuelto** desde el punto de vista funcional.  
+ÔÜá´©Å Los warnings del IDE son cosm├®ticos y no afectan el funcionamiento.  
+­ƒöä Despu├®s de refrescar Gradle y el IDE, los warnings deber├¡an minimizarse.
 
 ---
 
 **Fecha**: 2026-01-17  
-**Estado**: ✅ RESUELTO
+**Estado**: Ô£à RESUELTO

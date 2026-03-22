@@ -1,22 +1,22 @@
-# Guía de Uso de @Transactional en el Proyecto
+﻿# Gu├¡a de Uso de @Transactional en el Proyecto
 
-## Índice
+## ├ìndice
 
-1. [Introducción](#introducción)
-2. [Configuración Básica](#configuración-básica)
+1. [Introducci├│n](#introducci├│n)
+2. [Configuraci├│n B├ísica](#configuraci├│n-b├ísica)
 3. [Uso en Commands](#uso-en-commands)
-4. [Propagación de Transacciones](#propagación-de-transacciones)
+4. [Propagaci├│n de Transacciones](#propagaci├│n-de-transacciones)
 5. [Manejo de Excepciones y Rollback](#manejo-de-excepciones-y-rollback)
 6. [Testing de Transacciones](#testing-de-transacciones)
-7. [Mejores Prácticas](#mejores-prácticas)
+7. [Mejores Pr├ícticas](#mejores-pr├ícticas)
 
-## Introducción
+## Introducci├│n
 
-Las transacciones garantizan que un conjunto de operaciones se ejecuten de forma atómica: o todas se completan
+Las transacciones garantizan que un conjunto de operaciones se ejecuten de forma at├│mica: o todas se completan
 exitosamente o ninguna se aplica. En este proyecto, utilizamos `@Transactional` de Spring Boot para gestionar
 transacciones de forma declarativa.
 
-## Configuración Básica
+## Configuraci├│n B├ísica
 
 ### 1. MainApplication
 
@@ -44,7 +44,7 @@ dependencies {
 }
 ```
 
-### 3. Configuración en application.yml
+### 3. Configuraci├│n en application.yml
 
 ```yaml
 spring:
@@ -70,7 +70,7 @@ spring:
     default-timeout: 30
 ```
 
-### 4. Configuración Avanzada (Opcional)
+### 4. Configuraci├│n Avanzada (Opcional)
 
 ```java
 package com.empresa.plantilla.commons.config;
@@ -99,7 +99,7 @@ public class TransactionConfig {
 
 ## Uso en Commands
 
-### Ejemplo Básico: CreateUserCommand
+### Ejemplo B├ísico: CreateUserCommand
 
 ```java
 package com.empresa.plantilla.domain.user.command;
@@ -123,13 +123,13 @@ public class CreateUserCommand
 
     @Override
     protected void preProcess() throws DomainException {
-        // Validaciones sin transacción
+        // Validaciones sin transacci├│n
         if (context == null || context.getEmail() == null) {
-            throw new DomainException("Contexto inválido");
+            throw new DomainException("Contexto inv├ílido");
         }
         
         if (userRepository.existsByEmail(context.getEmail())) {
-            throw new DomainException("El email ya está registrado");
+            throw new DomainException("El email ya est├í registrado");
         }
         
         setValid(true);
@@ -138,7 +138,7 @@ public class CreateUserCommand
     @Override
     @Transactional(rollbackFor = Exception.class)
     protected void process() throws DomainException {
-        // Operación transaccional: crear usuario
+        // Operaci├│n transaccional: crear usuario
         User user = User.builder()
                 .name(context.getName())
                 .email(context.getEmail())
@@ -159,7 +159,7 @@ public class CreateUserCommand
 
     @Override
     protected void postProcess() throws DomainException {
-        // Post-procesamiento sin transacción
+        // Post-procesamiento sin transacci├│n
         if (result != null) {
             emailService.sendWelcomeEmail(result.getEmail());
         }
@@ -167,7 +167,7 @@ public class CreateUserCommand
 }
 ```
 
-### Ejemplo con Múltiples Operaciones: CreateOrderCommand
+### Ejemplo con M├║ltiples Operaciones: CreateOrderCommand
 
 ```java
 package com.empresa.plantilla.domain.order.command;
@@ -197,7 +197,7 @@ public class CreateOrderCommand
     protected void preProcess() throws DomainException {
         // Validar disponibilidad de productos
         if (context == null || context.getItems() == null || context.getItems().isEmpty()) {
-            throw new DomainException("Contexto de orden inválido");
+            throw new DomainException("Contexto de orden inv├ílido");
         }
         
         for (OrderItem item : context.getItems()) {
@@ -239,7 +239,7 @@ public class CreateOrderCommand
                 item.getQuantity()
             );
             
-            // Crear línea de orden
+            // Crear l├¡nea de orden
             OrderLine orderLine = OrderLine.builder()
                     .order(savedOrder)
                     .productId(item.getProductId())
@@ -251,7 +251,7 @@ public class CreateOrderCommand
         }
         
         // 3. Guardar orden completa
-        // Si algo falla aquí, TODO se revierte
+        // Si algo falla aqu├¡, TODO se revierte
         orderRepository.save(savedOrder);
         
         setResult(OrderResult.from(savedOrder));
@@ -260,7 +260,7 @@ public class CreateOrderCommand
 
     @Override
     protected void postProcess() throws DomainException {
-        // Enviar notificaciones (fuera de la transacción)
+        // Enviar notificaciones (fuera de la transacci├│n)
         if (result != null) {
             notificationService.notifyOrderCreated(result);
         }
@@ -275,7 +275,7 @@ public class CreateOrderCommand
 }
 ```
 
-## Propagación de Transacciones
+## Propagaci├│n de Transacciones
 
 ### Ejemplo: Command que llama a otros Commands
 
@@ -302,7 +302,7 @@ public class RegisterUserCommand
     @Override
     protected void preProcess() throws DomainException {
         if (context == null) {
-            throw new DomainException("Contexto inválido");
+            throw new DomainException("Contexto inv├ílido");
         }
         setValid(true);
     }
@@ -313,7 +313,7 @@ public class RegisterUserCommand
         rollbackFor = Exception.class
     )
     protected void process() throws DomainException {
-        // 1. Crear usuario (se une a esta transacción)
+        // 1. Crear usuario (se une a esta transacci├│n)
         CreateUserContext userContext = CreateUserContext.builder()
                 .name(context.getName())
                 .email(context.getEmail())
@@ -323,7 +323,7 @@ public class RegisterUserCommand
         createUserCommand.setContext(userContext);
         UserResult userResult = createUserCommand.execute();
         
-        // 2. Crear perfil (se une a esta transacción)
+        // 2. Crear perfil (se une a esta transacci├│n)
         CreateProfileContext profileContext = CreateProfileContext.builder()
                 .userId(userResult.getUserId())
                 .bio(context.getBio())
@@ -350,34 +350,34 @@ public class RegisterUserCommand
 }
 ```
 
-### Tipos de Propagación
+### Tipos de Propagaci├│n
 
 ```java
-// REQUIRED (por defecto): Usa transacción existente o crea una nueva
+// REQUIRED (por defecto): Usa transacci├│n existente o crea una nueva
 @Transactional(propagation = Propagation.REQUIRED)
 
-// REQUIRES_NEW: Siempre crea una nueva transacción (suspende la existente)
+// REQUIRES_NEW: Siempre crea una nueva transacci├│n (suspende la existente)
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 
-// SUPPORTS: Usa transacción si existe, sino ejecuta sin transacción
+// SUPPORTS: Usa transacci├│n si existe, sino ejecuta sin transacci├│n
 @Transactional(propagation = Propagation.SUPPORTS)
 
-// MANDATORY: Requiere transacción existente, lanza excepción si no hay
+// MANDATORY: Requiere transacci├│n existente, lanza excepci├│n si no hay
 @Transactional(propagation = Propagation.MANDATORY)
 
-// NOT_SUPPORTED: Se ejecuta sin transacción (suspende la existente)
+// NOT_SUPPORTED: Se ejecuta sin transacci├│n (suspende la existente)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 
-// NEVER: Lanza excepción si hay una transacción activa
+// NEVER: Lanza excepci├│n si hay una transacci├│n activa
 @Transactional(propagation = Propagation.NEVER)
 
-// NESTED: Crea transacción anidada si hay una existente
+// NESTED: Crea transacci├│n anidada si hay una existente
 @Transactional(propagation = Propagation.NESTED)
 ```
 
 ## Manejo de Excepciones y Rollback
 
-### Ejemplo: Rollback Explícito
+### Ejemplo: Rollback Expl├¡cito
 
 ```java
 package com.empresa.plantilla.domain.payment.command;
@@ -401,7 +401,7 @@ public class ProcessPaymentCommand
     @Override
     protected void preProcess() throws DomainException {
         if (context == null || context.getAmount() == null) {
-            throw new DomainException("Contexto de pago inválido");
+            throw new DomainException("Contexto de pago inv├ílido");
         }
         setValid(true);
     }
@@ -414,7 +414,7 @@ public class ProcessPaymentCommand
             RuntimeException.class
         },
         noRollbackFor = {
-            NotificationException.class  // No revertir por errores de notificación
+            NotificationException.class  // No revertir por errores de notificaci├│n
         }
     )
     protected void process() throws DomainException {
@@ -446,7 +446,7 @@ public class ProcessPaymentCommand
             setExecuted(true);
                     
         } catch (PaymentGatewayException e) {
-            // La transacción se revertirá automáticamente
+            // La transacci├│n se revertir├í autom├íticamente
             log.error("Error al procesar pago", e);
             throw new PaymentException("Error en el gateway de pago", e);
         }
@@ -454,7 +454,7 @@ public class ProcessPaymentCommand
 
     @Override
     protected void postProcess() throws DomainException {
-        // Enviar confirmación de pago
+        // Enviar confirmaci├│n de pago
     }
 }
 ```
@@ -486,7 +486,7 @@ public class BulkImportCommand
     @Override
     protected void preProcess() throws DomainException {
         if (context == null || context.getUsersData() == null) {
-            throw new DomainException("Contexto inválido");
+            throw new DomainException("Contexto inv├ílido");
         }
         setValid(true);
     }
@@ -496,7 +496,7 @@ public class BulkImportCommand
         List<User> successfulImports = new ArrayList<>();
         List<String> errors = new ArrayList<>();
         
-        // Cada usuario se importa en su propia transacción
+        // Cada usuario se importa en su propia transacci├│n
         for (UserData userData : context.getUsersData()) {
             try {
                 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -514,7 +514,7 @@ public class BulkImportCommand
                     }
                 });
             } catch (Exception e) {
-                errors.add("Error en transacción: " + e.getMessage());
+                errors.add("Error en transacci├│n: " + e.getMessage());
             }
         }
         
@@ -529,7 +529,7 @@ public class BulkImportCommand
 
     @Override
     protected void postProcess() throws DomainException {
-        // Generar reporte de importación
+        // Generar reporte de importaci├│n
     }
 
     private User createUserFromData(UserData data) {
@@ -593,7 +593,7 @@ class CreateUserCommandTest
         // Act
         UserResult result = command.execute();
         entityManager.flush();  // Forzar escritura a BD
-        entityManager.clear();  // Limpiar caché
+        entityManager.clear();  // Limpiar cach├®
         
         // Assert
         User savedUser = userRepository.findById(result.getUserId())
@@ -613,7 +613,7 @@ class CreateUserCommandTest
         // Act & Assert
         assertThrows(DomainException.class, () -> command.execute());
         
-        // Verificar que no se guardó nada
+        // Verificar que no se guard├│ nada
         entityManager.clear();
         long count = userRepository.count();
         assertEquals(0, count);
@@ -671,7 +671,7 @@ class CreateUserCommandTest
     @Override
     protected CreateUserContext createInvalidContext() {
         return CreateUserContext.builder()
-                .name("")  // Nombre inválido
+                .name("")  // Nombre inv├ílido
                 .email("invalid-email")
                 .password("123")
                 .build();
@@ -691,16 +691,16 @@ class CreateUserCommandTest
 
     @Override
     protected void setMethod() {
-        // Configuración específica si es necesaria
+        // Configuraci├│n espec├¡fica si es necesaria
     }
 }
 ```
 
-## Mejores Prácticas
+## Mejores Pr├ícticas
 
-### 1. Ubicación del @Transactional
+### 1. Ubicaci├│n del @Transactional
 
-✅ **CORRECTO**: Solo en el método `process()`
+Ô£à **CORRECTO**: Solo en el m├®todo `process()`
 
 ```java
 @Override
@@ -713,7 +713,7 @@ protected void process() throws DomainException {
 }
 ```
 
-❌ **INCORRECTO**: En toda la clase
+ÔØî **INCORRECTO**: En toda la clase
 
 ```java
 @Transactional  // NO hacer esto
@@ -722,29 +722,29 @@ public class CreateUserCommand extends CommandProcessAbstract<...> {
 }
 ```
 
-### 2. Especificar Rollback Explícitamente
+### 2. Especificar Rollback Expl├¡citamente
 
-✅ **CORRECTO**:
+Ô£à **CORRECTO**:
 
 ```java
 @Transactional(rollbackFor = Exception.class)
 protected void process() throws DomainException {
-    // Hace rollback para cualquier excepción
+    // Hace rollback para cualquier excepci├│n
 }
 ```
 
-❌ **INCORRECTO**: Confiar en el comportamiento por defecto
+ÔØî **INCORRECTO**: Confiar en el comportamiento por defecto
 
 ```java
 @Transactional  // Solo hace rollback para RuntimeException
 protected void process() throws DomainException {
-    // DomainException no causará rollback si es checked
+    // DomainException no causar├í rollback si es checked
 }
 ```
 
 ### 3. Usar Timeout Apropiado
 
-✅ **CORRECTO**:
+Ô£à **CORRECTO**:
 
 ```java
 @Transactional(
@@ -752,11 +752,11 @@ protected void process() throws DomainException {
     timeout = 30  // 30 segundos para operaciones normales
 )
 protected void process() throws DomainException {
-    // Operaciones con límite de tiempo
+    // Operaciones con l├¡mite de tiempo
 }
 ```
 
-⚠️ **PARA OPERACIONES LARGAS**:
+ÔÜá´©Å **PARA OPERACIONES LARGAS**:
 
 ```java
 @Transactional(
@@ -770,12 +770,12 @@ protected void process() throws DomainException {
 
 ### 4. Separar Operaciones Transaccionales
 
-✅ **CORRECTO**:
+Ô£à **CORRECTO**:
 
 ```java
 @Override
 protected void preProcess() throws DomainException {
-    // Validaciones (sin transacción)
+    // Validaciones (sin transacci├│n)
     validateContext();
     setValid(true);
 }
@@ -791,14 +791,14 @@ protected void process() throws DomainException {
 
 @Override
 protected void postProcess() throws DomainException {
-    // Notificaciones (sin transacción)
+    // Notificaciones (sin transacci├│n)
     emailService.sendWelcomeEmail(result.getEmail());
 }
 ```
 
 ### 5. Usar readOnly en Queries
 
-❌ **INCORRECTO**:
+ÔØî **INCORRECTO**:
 
 ```java
 @Transactional  // No especifica readOnly
@@ -807,7 +807,7 @@ protected UserResult process() {
 }
 ```
 
-✅ **CORRECTO**:
+Ô£à **CORRECTO**:
 
 ```java
 @Transactional(readOnly = true)
@@ -819,7 +819,7 @@ protected UserResult process() {
 
 ### 6. Manejo de Excepciones en Transacciones
 
-✅ **CORRECTO**:
+Ô£à **CORRECTO**:
 
 ```java
 @Transactional(rollbackFor = Exception.class)
@@ -836,14 +836,14 @@ protected Result process() throws DomainException {
 }
 ```
 
-### 7. Propagación en Commands Anidados
+### 7. Propagaci├│n en Commands Anidados
 
-✅ **CORRECTO**:
+Ô£à **CORRECTO**:
 
 ```java
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 protected Result process() throws DomainException {
-    // Reutiliza transacción existente
+    // Reutiliza transacci├│n existente
     UserResult user = createUserCommand.execute();
     ProfileResult profile = createProfileCommand.execute();
     // Si alguno falla, ambos se revierten
@@ -853,20 +853,20 @@ protected Result process() throws DomainException {
 
 ### 8. Logging en Transacciones
 
-✅ **CORRECTO**:
+Ô£à **CORRECTO**:
 
 ```java
 @Transactional(rollbackFor = Exception.class)
 protected Result process() throws DomainException {
-    log.debug("Iniciando transacción para {}", context);
+    log.debug("Iniciando transacci├│n para {}", context);
     
     try {
         Result result = performOperation();
-        log.info("Transacción completada exitosamente");
+        log.info("Transacci├│n completada exitosamente");
         setResult(result);
         setExecuted(true);
     } catch (Exception e) {
-        log.error("Error en transacción, ejecutando rollback", e);
+        log.error("Error en transacci├│n, ejecutando rollback", e);
         throw e;
     }
 }
@@ -874,14 +874,14 @@ protected Result process() throws DomainException {
 
 ### 9. Evitar Operaciones Largas en Transacciones
 
-❌ **INCORRECTO**:
+ÔØî **INCORRECTO**:
 
 ```java
 @Transactional(rollbackFor = Exception.class)
 protected Result process() throws DomainException {
     User user = userRepository.save(entity);
     
-    // ¡NO! Operación larga dentro de transacción
+    // ┬íNO! Operaci├│n larga dentro de transacci├│n
     Thread.sleep(10000);
     emailService.sendEmail(user.getEmail());
     
@@ -889,7 +889,7 @@ protected Result process() throws DomainException {
 }
 ```
 
-✅ **CORRECTO**:
+Ô£à **CORRECTO**:
 
 ```java
 @Transactional(rollbackFor = Exception.class)
@@ -902,35 +902,35 @@ protected Result process() throws DomainException {
 
 @Override
 protected void postProcess() throws DomainException {
-    // Operaciones largas fuera de transacción
+    // Operaciones largas fuera de transacci├│n
     emailService.sendEmail(result.getEmail());
 }
 ```
 
 ### 10. Testing con Transacciones
 
-✅ **CORRECTO**:
+Ô£à **CORRECTO**:
 
 ```java
 @Test
 @Transactional
 @Rollback  // Asegura que no afecta otros tests
 void testCreateUser() throws DomainException {
-    // Test con rollback automático
+    // Test con rollback autom├ítico
     UserResult result = command.execute();
     entityManager.flush();
     assertNotNull(result);
 }
 ```
 
-## Resumen de Configuración
+## Resumen de Configuraci├│n
 
-| Aspecto         | Recomendación              | Ejemplo                                   |
+| Aspecto         | Recomendaci├│n              | Ejemplo                                   |
 |-----------------|----------------------------|-------------------------------------------|
-| **Ubicación**   | Solo en método `process()` | `@Transactional protected void process()` |
-| **Propagación** | `REQUIRED` para escritura  | `propagation = Propagation.REQUIRED`      |
+| **Ubicaci├│n**   | Solo en m├®todo `process()` | `@Transactional protected void process()` |
+| **Propagaci├│n** | `REQUIRED` para escritura  | `propagation = Propagation.REQUIRED`      |
 | **Rollback**    | Todas las excepciones      | `rollbackFor = Exception.class`           |
-| **Timeout**     | 30s normal, más para batch | `timeout = 30`                            |
+| **Timeout**     | 30s normal, m├ís para batch | `timeout = 30`                            |
 | **Isolation**   | `READ_COMMITTED`           | `isolation = Isolation.READ_COMMITTED`    |
 | **ReadOnly**    | `true` para queries        | `readOnly = true`                         |
 
@@ -946,7 +946,7 @@ void testCreateUser() throws DomainException {
 // REPEATABLE_READ: Previene dirty y non-repeatable reads
 @Transactional(isolation = Isolation.REPEATABLE_READ)
 
-// SERIALIZABLE: Mayor aislamiento, más lento
+// SERIALIZABLE: Mayor aislamiento, m├ís lento
 @Transactional(isolation = Isolation.SERIALIZABLE)
 ```
 
@@ -960,13 +960,13 @@ protected OrderResult process() throws DomainException {
     // Crear orden principal
     Order order = orderRepository.save(new Order());
     
-    // Agregar líneas de orden (cascada)
+    // Agregar l├¡neas de orden (cascada)
     for (OrderItem item : context.getItems()) {
         OrderLine line = new OrderLine(order, item);
         order.addLine(line);
     }
     
-    // Una sola transacción para todo
+    // Una sola transacci├│n para todo
     orderRepository.save(order);
     
     setResult(OrderResult.from(order));
@@ -974,12 +974,12 @@ protected OrderResult process() throws DomainException {
 }
 ```
 
-### Escenario 2: Actualizar múltiples entidades
+### Escenario 2: Actualizar m├║ltiples entidades
 
 ```java
 @Transactional(rollbackFor = Exception.class)
 protected TransferResult process() throws DomainException {
-    // Operaciones atómicas
+    // Operaciones at├│micas
     Account from = accountRepository.findById(context.getFromId())
         .orElseThrow(() -> new DomainException("Cuenta origen no existe"));
     
@@ -999,12 +999,12 @@ protected TransferResult process() throws DomainException {
 }
 ```
 
-### Escenario 3: Operación con servicio externo
+### Escenario 3: Operaci├│n con servicio externo
 
 ```java
 @Override
 protected void preProcess() throws DomainException {
-    // Validar antes de iniciar transacción
+    // Validar antes de iniciar transacci├│n
     validatePaymentDetails();
     setValid(true);
 }
@@ -1026,23 +1026,23 @@ protected PaymentResult process() throws DomainException {
         setExecuted(true);
         
     } catch (ExternalServiceException e) {
-        // Rollback automático
+        // Rollback autom├ítico
         throw new DomainException("Error en servicio externo", e);
     }
 }
 ```
 
-## Conclusión
+## Conclusi├│n
 
 El uso correcto de `@Transactional` en este proyecto garantiza:
 
-- ✅ **Consistencia de datos**: Las operaciones se completan o se revierten completamente
-- ✅ **Integridad**: Los datos permanecen en un estado válido
-- ✅ **Rendimiento**: Transacciones optimizadas y controladas
-- ✅ **Mantenibilidad**: Código claro y predecible
-- ✅ **Testabilidad**: Facilidad para escribir tests confiables
+- Ô£à **Consistencia de datos**: Las operaciones se completan o se revierten completamente
+- Ô£à **Integridad**: Los datos permanecen en un estado v├ílido
+- Ô£à **Rendimiento**: Transacciones optimizadas y controladas
+- Ô£à **Mantenibilidad**: C├│digo claro y predecible
+- Ô£à **Testabilidad**: Facilidad para escribir tests confiables
 
-Siguiendo estas guías, tus Commands manejarán transacciones de forma robusta y confiable en el contexto de la
+Siguiendo estas gu├¡as, tus Commands manejar├ín transacciones de forma robusta y confiable en el contexto de la
 arquitectura `CommandProcessAbstract`.
 
 ## Referencias

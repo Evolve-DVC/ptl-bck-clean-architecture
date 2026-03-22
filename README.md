@@ -41,20 +41,16 @@ Incluye el header `Accept-Language`:
 
 ## Guias de Desarrollo
 
-### Guias Principales
+### Documentacion consolidada
 
-- **[Documentacion de API con Swagger](./docs/swagger-documentation-guide.md)** - Como documentar endpoints y DTOs
-- **[Seguridad JWT](./docs/security-implementation.md)** - Implementacion de autenticacion centralizada
-- **[Internacionalizacion (i18n)](./docs/i18n-guide.md)** - Soporte multi-idioma
-- **[Transacciones](./docs/transactional-guide.md)** - Gestion de transacciones con @Transactional
-- **[Respuestas Genericas](./docs/generic-response-guide.md)** - Estandarizacion de respuestas API
+- **[Indice de Documentacion](./docs/DOCUMENTATION_INDEX.md)** - Vista general y criterio de consolidacion
+- **[Funcionalidades Implementadas](./docs/FUNCIONALIDADES_IMPLEMENTADAS.md)** - Estado real agrupado por funcionalidad
+- **[PR Doc Checklist](./docs/PR_DOC_CHECKLIST.md)** - Checklist para mantener docs alineadas en cada PR
 
-### Guias Tecnicas
+### Pendientes HU / proceso no implementado
 
-- **[Organizacion de Properties](./docs/properties-organization-guide.md)** - Como organizar configuraciones por
-  ambiente
-- **[Analisis de Properties](./docs/properties-analysis-report.md)** - Reporte de propiedades utilizadas
-- **[Solucion de Warnings del IDE](./docs/ide-warnings-solution.md)** - Resolver warnings de configuracion
+- **[Seguridad JWT](./docs/security-implementation.md)** - Backlog de implementacion de seguridad
+- **[Plan Infra Type/TypeCategory](./docs/plan-infrastructureTypeTypeCategory.prompt.md)** - HU/proceso pendiente
 
 ## Arquitectura
 

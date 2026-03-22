@@ -1,21 +1,21 @@
-# Guía de Uso de GenericResponse
+﻿# Gu├¡a de Uso de GenericResponse
 
-## Introducción
+## Introducci├│n
 
 `GenericResponse<T>` es la clase unificada para todas las respuestas de API en el proyecto. Reemplaza las clases
-anteriores `SimpleResponse` y `BodyResponse`, proporcionando una solución más flexible y completa.
+anteriores `SimpleResponse` y `BodyResponse`, proporcionando una soluci├│n m├ís flexible y completa.
 
 ## Estructura de GenericResponse
 
 ```java
 public class GenericResponse<T> {
-    private boolean ok;           // Indica éxito o error
-    private Integer codigo;       // Código HTTP
+    private boolean ok;           // Indica ├®xito o error
+    private Integer codigo;       // C├│digo HTTP
     private String mensaje;       // Mensaje descriptivo
-    private T dato;              // Objeto único (opcional)
+    private T dato;              // Objeto ├║nico (opcional)
     private List<T> datos;       // Lista de objetos (opcional)
     private Integer conteo;      // Cantidad de items (opcional)
-    private String totales;      // Información de totales (opcional)
+    private String totales;      // Informaci├│n de totales (opcional)
 }
 ```
 
@@ -99,7 +99,7 @@ public ResponseEntity<GenericResponse<UserDto>> getAllUsers() {
 
 ### 3. Respuesta Paginada con Metadatos
 
-Para retornar resultados paginados con información adicional:
+Para retornar resultados paginados con informaci├│n adicional:
 
 ```java
 @GetMapping("/paginated")
@@ -114,7 +114,7 @@ public ResponseEntity<GenericResponse<UserDto>> getUsersPaginated(
         "Usuarios paginados recuperados",
         userPage.getContent(),
         (int) userPage.getTotalElements(),
-        String.format("Página %d de %d", page + 1, userPage.getTotalPages())
+        String.format("P├ígina %d de %d", page + 1, userPage.getTotalPages())
     );
     
     return ResponseEntity.ok(response);
@@ -141,7 +141,7 @@ public ResponseEntity<GenericResponse<UserDto>> getUsersPaginated(
     }
   ],
   "conteo": 100,
-  "totales": "Página 1 de 10"
+  "totales": "P├ígina 1 de 10"
 }
 ```
 
@@ -171,7 +171,7 @@ public ResponseEntity<GenericResponse<Void>> handleNotFound(ResourceNotFoundExce
 }
 ```
 
-### 5. Respuesta de Creación
+### 5. Respuesta de Creaci├│n
 
 Para operaciones POST que crean recursos:
 
@@ -205,7 +205,7 @@ public ResponseEntity<GenericResponse<UserDto>> createUser(@RequestBody CreateUs
 }
 ```
 
-### 6. Respuesta de Actualización
+### 6. Respuesta de Actualizaci├│n
 
 Para operaciones PUT/PATCH:
 
@@ -227,7 +227,7 @@ public ResponseEntity<GenericResponse<UserDto>> updateUser(
 }
 ```
 
-### 7. Respuesta de Eliminación
+### 7. Respuesta de Eliminaci├│n
 
 Para operaciones DELETE:
 
@@ -292,7 +292,7 @@ public ResponseEntity<GenericResponse<UserDto>> searchUsers(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size) {
     
-    // Crear contexto de búsqueda
+    // Crear contexto de b├║squeda
     SearchUserContext context = SearchUserContext.builder()
             .keyword(keyword)
             .page(page)
@@ -305,7 +305,7 @@ public ResponseEntity<GenericResponse<UserDto>> searchUsers(
     // Retornar respuesta paginada
     GenericResponse<UserDto> response = GenericResponse.successPaginated(
         HttpStatus.OK.value(),
-        "Búsqueda completada",
+        "B├║squeda completada",
         result.getUsers(),
         result.getTotalElements(),
         String.format("Encontrados %d usuarios", result.getTotalElements())
@@ -351,7 +351,7 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
         GenericResponse<Map<String, String>> response = GenericResponse.<Map<String, String>>builder()
                 .ok(false)
                 .codigo(HttpStatus.BAD_REQUEST.value())
-                .mensaje("Errores de validación")
+                .mensaje("Errores de validaci├│n")
                 .dato(errors)
                 .build();
         
@@ -371,7 +371,7 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
 }
 ```
 
-## Métodos Factory Disponibles
+## M├®todos Factory Disponibles
 
 ### 1. success(codigo, mensaje, dato)
 
@@ -379,7 +379,7 @@ Crea una respuesta exitosa con un solo objeto.
 
 ### 2. success(codigo, mensaje, datos)
 
-Crea una respuesta exitosa con una lista de objetos. Calcula automáticamente el `conteo`.
+Crea una respuesta exitosa con una lista de objetos. Calcula autom├íticamente el `conteo`.
 
 ### 3. successPaginated(codigo, mensaje, datos, conteo, totales)
 
@@ -391,20 +391,20 @@ Crea una respuesta de error.
 
 ## Builder Pattern
 
-También puedes usar el patrón builder para mayor flexibilidad:
+Tambi├®n puedes usar el patr├│n builder para mayor flexibilidad:
 
 ```java
 GenericResponse<UserDto> response = GenericResponse.<UserDto>builder()
         .ok(true)
         .codigo(HttpStatus.OK.value())
-        .mensaje("Operación exitosa")
+        .mensaje("Operaci├│n exitosa")
         .dato(userDto)
         .build();
 ```
 
-## Mejores Prácticas
+## Mejores Pr├ícticas
 
-### 1. ✅ Usar los métodos factory
+### 1. Ô£à Usar los m├®todos factory
 
 ```java
 // CORRECTO
@@ -420,7 +420,7 @@ response.setMensaje("OK");
 response.setDato(user);
 ```
 
-### 2. ✅ Usar tipos específicos
+### 2. Ô£à Usar tipos espec├¡ficos
 
 ```java
 // CORRECTO
@@ -429,10 +429,10 @@ public ResponseEntity<GenericResponse<UserDto>> getUser() { }
 
 ```java
 // EVITAR
-public ResponseEntity<GenericResponse> getUser() { }  // Sin tipo genérico
+public ResponseEntity<GenericResponse> getUser() { }  // Sin tipo gen├®rico
 ```
 
-### 3. ✅ Mensajes descriptivos
+### 3. Ô£à Mensajes descriptivos
 
 ```java
 // CORRECTO
@@ -444,7 +444,7 @@ GenericResponse.success(200, "Usuario creado exitosamente", user);
 GenericResponse.success(200, "OK", user);
 ```
 
-### 4. ✅ Códigos HTTP apropiados
+### 4. Ô£à C├│digos HTTP apropiados
 
 ```java
 // CORRECTO
@@ -452,14 +452,14 @@ GenericResponse.success(HttpStatus.CREATED.value(), "Creado", user);
 GenericResponse.error(HttpStatus.NOT_FOUND.value(), "No encontrado");
 ```
 
-### 5. ✅ Consistencia en paginación
+### 5. Ô£à Consistencia en paginaci├│n
 
 ```java
-// CORRECTO - Siempre incluir conteo y totales en paginación
-GenericResponse.successPaginated(200, "OK", users, totalElements, "Página 1 de 5");
+// CORRECTO - Siempre incluir conteo y totales en paginaci├│n
+GenericResponse.successPaginated(200, "OK", users, totalElements, "P├ígina 1 de 5");
 ```
 
-## Migración desde Clases Antiguas
+## Migraci├│n desde Clases Antiguas
 
 ### Desde SimpleResponse
 
@@ -513,25 +513,25 @@ GenericResponse<User> response = GenericResponse.successPaginated(
 
 ## Ventajas de GenericResponse
 
-1. **Unificación**: Una sola clase para todos los tipos de respuesta
+1. **Unificaci├│n**: Una sola clase para todos los tipos de respuesta
 2. **Flexibilidad**: Maneja respuestas simples, listas y paginadas
-3. **Serialización eficiente**: `@JsonInclude(NON_NULL)` omite campos null
-4. **Type-safe**: Genéricos fuertemente tipados
-5. **Factory methods**: Métodos estáticos convenientes para casos comunes
+3. **Serializaci├│n eficiente**: `@JsonInclude(NON_NULL)` omite campos null
+4. **Type-safe**: Gen├®ricos fuertemente tipados
+5. **Factory methods**: M├®todos est├íticos convenientes para casos comunes
 6. **Builder pattern**: Flexibilidad para casos complejos
-7. **Documentación clara**: JavaDoc completo
+7. **Documentaci├│n clara**: JavaDoc completo
 
 ## ResponseBuilder - Helper para Respuestas
 
-Para simplificar aún más la creación de respuestas, se proporciona la clase `ResponseBuilder` que actúa como una fachada
+Para simplificar a├║n m├ís la creaci├│n de respuestas, se proporciona la clase `ResponseBuilder` que act├║a como una fachada
 sobre `GenericResponse`.
 
-### Métodos Disponibles
+### M├®todos Disponibles
 
-#### Respuestas de Éxito
+#### Respuestas de ├ëxito
 
 ```java
-// Objeto único
+// Objeto ├║nico
 ResponseBuilder.success(user);
 ResponseBuilder.success(user, "Usuario encontrado");
 
@@ -562,14 +562,14 @@ ResponseBuilder.paginatedFromList(users, pageNumber, pageSize);
 #### Respuestas de Error
 
 ```java
-// Error genérico
+// Error gen├®rico
 ResponseBuilder.error("Mensaje de error");
 ResponseBuilder.error(exception);
 ResponseBuilder.error(exception, 500);
-ResponseBuilder.error(400, "Solicitud inválida");
+ResponseBuilder.error(400, "Solicitud inv├ílida");
 
-// Errores específicos
-ResponseBuilder.badRequest("Datos inválidos");           // 400
+// Errores espec├¡ficos
+ResponseBuilder.badRequest("Datos inv├ílidos");           // 400
 ResponseBuilder.unauthorized("No autenticado");          // 401
 ResponseBuilder.forbidden("Sin permisos");               // 403
 ResponseBuilder.notFound("Usuario no encontrado");       // 404
@@ -668,7 +668,7 @@ public ResponseEntity<GenericResponse<UserDto>> searchUsers(
     IPageableResult<UserDto> result = searchUserQuery.execute(context);
     
     return ResponseEntity.ok(
-            ResponseBuilder.paginated(result, "Búsqueda completada")
+            ResponseBuilder.paginated(result, "B├║squeda completada")
     );
 }
 ```
@@ -715,7 +715,7 @@ public class ErrorHandlerConfig extends ResponseEntityExceptionHandler {
 }
 ```
 
-### Comparación: Antes vs Ahora
+### Comparaci├│n: Antes vs Ahora
 
 #### Antes (con clases antiguas y sin helper)
 
@@ -739,7 +739,7 @@ GenericResponse<User> response = GenericResponse.<User>builder()
         .cuerpo(BodyResponse.<User>builder()
                 .conteo(pageableResult.getTotalElements().intValue())
                 .datos(pageableResult.getContent())
-                .totales("Página 1 de 10")
+                .totales("P├ígina 1 de 10")
                 .build())
         .build();
 ```
@@ -754,41 +754,41 @@ GenericResponse<User> response = ResponseBuilder.success(user, "Usuario encontra
 GenericResponse<User> response = ResponseBuilder.paginated(pageableResult);
 ```
 
-**Reducción de código: ~80%**
+**Reducci├│n de c├│digo: ~80%**
 
 ### Ventajas de usar ResponseBuilder
 
-1. ✅ **Código más limpio**: Menos verbosidad
-2. ✅ **Consistencia**: Respuestas estandarizadas en toda la aplicación
-3. ✅ **Mantenibilidad**: Cambios centralizados
-4. ✅ **Legibilidad**: Métodos con nombres descriptivos
-5. ✅ **Type-safe**: Inferencia de tipos automática
-6. ✅ **HTTP Status**: Códigos HTTP correctos automáticamente
+1. Ô£à **C├│digo m├ís limpio**: Menos verbosidad
+2. Ô£à **Consistencia**: Respuestas estandarizadas en toda la aplicaci├│n
+3. Ô£à **Mantenibilidad**: Cambios centralizados
+4. Ô£à **Legibilidad**: M├®todos con nombres descriptivos
+5. Ô£à **Type-safe**: Inferencia de tipos autom├ítica
+6. Ô£à **HTTP Status**: C├│digos HTTP correctos autom├íticamente
 
-### Cuándo usar qué
+### Cu├índo usar qu├®
 
-| Caso de Uso        | Método Recomendado                          |
+| Caso de Uso        | M├®todo Recomendado                          |
 |--------------------|---------------------------------------------|
 | Retornar un objeto | `ResponseBuilder.success(obj)`              |
 | Retornar una lista | `ResponseBuilder.successList(list)`         |
 | Retornar paginado  | `ResponseBuilder.paginated(pageableResult)` |
 | Crear recurso      | `ResponseBuilder.created(obj)`              |
 | Eliminar recurso   | `ResponseBuilder.noContent()`               |
-| Error genérico     | `ResponseBuilder.error(mensaje)`            |
+| Error gen├®rico     | `ResponseBuilder.error(mensaje)`            |
 | No encontrado      | `ResponseBuilder.notFound(mensaje)`         |
 | No autorizado      | `ResponseBuilder.unauthorized(mensaje)`     |
 | Sin permisos       | `ResponseBuilder.forbidden(mensaje)`        |
-| Datos inválidos    | `ResponseBuilder.badRequest(mensaje)`       |
+| Datos inv├ílidos    | `ResponseBuilder.badRequest(mensaje)`       |
 
-## Conclusión
+## Conclusi├│n
 
-`GenericResponse<T>` junto con `ResponseBuilder` proporcionan una solución completa y simplificada para manejar
+`GenericResponse<T>` junto con `ResponseBuilder` proporcionan una soluci├│n completa y simplificada para manejar
 respuestas de API:
 
 - **GenericResponse**: Clase unificada para todas las respuestas
 - **ResponseBuilder**: Helper para crear respuestas de forma conveniente
 
-Las clases `SimpleResponse` y `BodyResponse` están marcadas como `@Deprecated` y se eliminarán en futuras versiones.
+Las clases `SimpleResponse` y `BodyResponse` est├ín marcadas como `@Deprecated` y se eliminar├ín en futuras versiones.
 
-**Recomendación**: Usa siempre `ResponseBuilder` para crear respuestas en tus controllers y handlers de error.
+**Recomendaci├│n**: Usa siempre `ResponseBuilder` para crear respuestas en tus controllers y handlers de error.
 
