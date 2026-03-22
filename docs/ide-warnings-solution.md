@@ -30,7 +30,6 @@ Se corrigieron las propiedades de **kebab-case** a **camelCase**:
 spring.datasource.command.hikari.idle-timeout=300000
 spring.datasource.command.hikari.connection-timeout=20000
 spring.datasource.command.hikari.pool-name=CommandHikariPool
-
 # DESPUÉS (Correcto)
 spring.datasource.command.hikari.idleTimeout=300000
 spring.datasource.command.hikari.connectionTimeout=20000
@@ -66,15 +65,21 @@ Se actualizaron las anotaciones `@Value` en:
 **CommandJpaConfig.java**:
 
 ```java
-@Value("${spring.datasource.command.hikari.maximumPoolSize}") int maximumPoolSize,
-@Value("${spring.datasource.command.hikari.minimumIdle}") int minimumIdle
+
+@Value("${spring.datasource.command.hikari.maximumPoolSize}")
+int maximumPoolSize,
+@Value("${spring.datasource.command.hikari.minimumIdle}")
+int minimumIdle
 ```
 
 **QueryJpaConfig.java**:
 
 ```java
-@Value("${spring.datasource.query.hikari.maximumPoolSize}") int maximumPoolSize,
-@Value("${spring.datasource.query.hikari.minimumIdle}") int minimumIdle
+
+@Value("${spring.datasource.query.hikari.maximumPoolSize}")
+int maximumPoolSize,
+@Value("${spring.datasource.query.hikari.minimumIdle}")
+int minimumIdle
 ```
 
 ## ¿Por qué persisten los warnings?
@@ -179,6 +184,7 @@ spring.datasource.query.hikari.maximumPoolSize=10
 Para eliminar completamente los warnings, se puede crear una clase `@ConfigurationProperties`:
 
 ```java
+
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource.command.hikari")
 public class CommandHikariProperties {
@@ -187,7 +193,7 @@ public class CommandHikariProperties {
     private long idleTimeout = 300000;
     private long connectionTimeout = 20000;
     private String poolName = "CommandHikariPool";
-    
+
     // Getters y Setters
 }
 ```

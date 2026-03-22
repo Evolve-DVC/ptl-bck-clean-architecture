@@ -121,11 +121,10 @@ public class LocaleConfig {
 
 ```properties
 # Sintaxis básica
-clave.mensaje = Texto del mensaje
-
+clave.mensaje=Texto del mensaje
 # Con parámetros (usar {0}, {1}, etc.)
-error.not.found = No se encontró el recurso con ID: {0}
-error.type.mismatch = El parámetro ''{0}'' debe ser de tipo {1}
+error.not.found=No se encontró el recurso con ID: {0}
+error.type.mismatch=El parámetro ''{0}'' debe ser de tipo {1}
 ```
 
 ---

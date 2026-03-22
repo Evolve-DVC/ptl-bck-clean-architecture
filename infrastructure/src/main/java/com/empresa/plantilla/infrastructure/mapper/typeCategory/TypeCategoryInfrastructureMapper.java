@@ -1,17 +1,17 @@
 package com.empresa.plantilla.infrastructure.mapper.typeCategory;
 
 import com.empresa.plantilla.domain.model.TypeCategory;
-import com.empresa.plantilla.infrastructure.entities.typeCategory.TypeCategoryEntity;
 import com.empresa.plantilla.infrastructure.dto.typeCategory.TypeCategoryCreateRequestDto;
 import com.empresa.plantilla.infrastructure.dto.typeCategory.TypeCategoryFilterDto;
 import com.empresa.plantilla.infrastructure.dto.typeCategory.TypeCategoryResponseDto;
 import com.empresa.plantilla.infrastructure.dto.typeCategory.TypeCategoryUpdateRequestDto;
+import com.empresa.plantilla.infrastructure.entities.typeCategory.TypeCategoryEntity;
 import com.empresa.plantilla.infrastructure.mapper.IGenericMapper;
 import org.mapstruct.Mapper;
-
-import java.util.List;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+
+import java.util.List;
 
 /**
  * Mapper de infraestructura para TypeCategory usando MapStruct.

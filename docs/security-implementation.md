@@ -64,7 +64,7 @@ import lombok.Data;
 public class LoginRequest {
     @NotBlank(message = "{auth.username.required}")
     private String username;
-    
+
     @NotBlank(message = "{auth.password.required}")
     private String password;
 }
@@ -197,7 +197,7 @@ public class JwtService {
         claims.put("roles", userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList()));
-        
+
         return buildToken(claims, userDetails.getUsername(), expiration);
     }
 
@@ -282,8 +282,8 @@ public class AuthService {
     private final UserDetailsService userDetailsService;
 
     public AuthService(AuthenticationManager authenticationManager,
-                      JwtService jwtService,
-                      UserDetailsService userDetailsService) {
+                       JwtService jwtService,
+                       UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
@@ -733,11 +733,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        
+
                         // Endpoints protegidos
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
-                        
+
                         // Cualquier otra petición requiere autenticación
                         .anyRequest().authenticated()
                 )
@@ -970,8 +970,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request,
-                        HttpServletResponse response,
-                        AuthenticationException authException) throws IOException {
+                         HttpServletResponse response,
+                         AuthenticationException authException) throws IOException {
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -1080,6 +1080,7 @@ dependencies {
 **AuthServiceTest.java**
 
 ```java
+
 @SpringBootTest
 class AuthServiceTest {
 
@@ -1116,6 +1117,7 @@ class AuthServiceTest {
 **JwtValidatorTest.java**
 
 ```java
+
 @SpringBootTest
 class JwtValidatorTest {
 
@@ -1209,7 +1211,9 @@ Autenticar usuario y obtener token JWT.
   "tokenType": "Bearer",
   "expiresIn": 86400000,
   "username": "user@example.com",
-  "roles": ["ROLE_USER"]
+  "roles": [
+    "ROLE_USER"
+  ]
 }
 ```
 
@@ -1231,7 +1235,9 @@ Validar token JWT.
 {
   "valid": true,
   "username": "user@example.com",
-  "roles": ["ROLE_USER"],
+  "roles": [
+    "ROLE_USER"
+  ],
   "message": "Token válido"
 }
 ```
@@ -1257,7 +1263,9 @@ Renovar token JWT.
   "tokenType": "Bearer",
   "expiresIn": 86400000,
   "username": "user@example.com",
-  "roles": ["ROLE_USER"]
+  "roles": [
+    "ROLE_USER"
+  ]
 }
 ```
 
@@ -1346,8 +1354,10 @@ sequenceDiagram
 
 ```java
 // Agregar logs en JwtAuthenticationFilter
-log.debug("Validating token for user: {}", username);
-log.warn("Invalid token attempt from IP: {}", request.getRemoteAddr());
+log.debug("Validating token for user: {}",username);
+log.
+
+warn("Invalid token attempt from IP: {}",request.getRemoteAddr());
 ```
 
 ### Métricas
